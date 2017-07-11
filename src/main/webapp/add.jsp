@@ -2,12 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>添加客户</title>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
+
 </head>
+<script type="text/javascript">
+    function validatePhone() {
+        alert("校验手机号码");
+    }
+</script>
 <body>
 <h3 align="center">添加客户</h3>
-<form action="<c:url value='/customer/save.action'/>" method="post" >
-    <input type="hidden" name="method" value="add">
+<form action="${pageContext.request.contextPath}/customer/save" method="post" >
     <table align="center" width="40%">
         <tr>
             <td><strong>客户名称</strong></td>
@@ -21,7 +27,7 @@
         <tr>
             <td><strong>客户性别</strong></td>
             <td>
-                <input type="radio" name="sex" value="male" id="male"/>
+                <input type="radio" name="sex" value="male" id="male" checked="checked"/>
                 <label for="male">男</label>
                 <input type="radio" name="sex" value="female" id="female"/>
                 <label for="female">女</label>
@@ -33,7 +39,7 @@
         <tr>
             <td><strong>手机</strong></td>
             <td>
-                <input type="text" name="phone" id="phone"/>
+                <input type="text" name="phone" id="phone" onblur="validatePhone()"/>
             </td>
             <td>
                 <label id="phoneError" class="error">&nbsp;</label>

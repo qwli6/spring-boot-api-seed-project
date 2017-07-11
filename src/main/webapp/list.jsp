@@ -25,8 +25,9 @@
             <td>${customer.email}</td>
             <td>${customer.memo}</td>
             <td>
-                <a href="<c:url value='/customer/findCustomerById.action?cid=${customer.cid}'/> ">编辑</a>
-                <a href="<c:url value='/customer/delete.action?cid=${customer.cid}'/> ">删除</a>
+                <a href="<c:url value='/customer/find/${customer.cid}'/> ">编辑</a>
+                <%--<a href="<c:url value='/customer/delete/${customer.cid}'/> ">删除</a>--%>
+                <a href="${pageContext.request.contextPath}/customer/delete/${customer.cid}">删除</a>
             </td>
         </tr>
         </c:forEach>

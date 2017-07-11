@@ -8,9 +8,9 @@
 </head>
 <body style="text-align: center;">
     <h1>客户关系管理系统</h1>
-    <a href="<c:url value='/add.jsp'/>" target="main">添加客户</a>
-    <a href="<c:url value='/customer/query.action'/>" target="main">查询全部客户</a>
-    <a href="<c:url value='/query.jsp'/>">高级搜索</a>
+    <a href="${pageContext.request.contextPath}/add.jsp" target="main">添加客户</a>
+    <a href="${pageContext.request.contextPath}/customer/list" target="main">全部客户</a>
+    <a href="${pageContext.request.contextPath}/query.jsp">高级查询</a>
 
 </body>
 </html>

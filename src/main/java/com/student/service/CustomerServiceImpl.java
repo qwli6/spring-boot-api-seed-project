@@ -3,6 +3,7 @@ package com.student.service;
 import com.student.mapper.CustomerMapper;
 import com.student.pojo.Customer;
 import com.student.pojo.CustomerExample;
+import com.student.vo.QueryVo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,28 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(String cid) {
         customerMapper.deleteByPrimaryKey(cid);
+    }
+
+    @Override
+    public List<Customer> search(QueryVo queryVo) {
+        Customer customer = queryVo.getCustomer();
+        CustomerExample customerExample = new CustomerExample();
+        CustomerExample.Criteria criteria = customerExample.createCriteria();
+        //添加查询条件，如果 customer 中的属性不为空，就将查询条件拼接
+
+        if(customer.getSex() != null && !"".equals(customer.getSex())){
+            criteria.andSexEqualTo(customer.getSex());
+        }
+        if(customer.getName() != null && !"".equals(customer.getName())) {
+            criteria.andNameLike("%"+customer.getName()+"%");
+        }
+        if(customer.getEmail() != null && !"".equals(customer.getEmail())){
+            criteria.andEmailLike("%"+ customer.getEmail() +"%");
+        }
+        if(customer.getPhone() != null && !"".equals(customer.getPhone())){
+            criteria.andPhoneLike("%" + customer.getPhone() + "%");
+        }
+        return customerMapper.selectByExample(customerExample);
     }
 
 }

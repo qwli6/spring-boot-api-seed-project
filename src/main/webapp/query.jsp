@@ -6,20 +6,18 @@
 </head>
 <body>
     <h3 align="center">高级搜索</h3>
-    <form action="<c:url value="/CustomerServlet"/>" method="get">
-        <input type="hidden" name="method" value="query">
-        <table border="0" align="center" width="40%" style="margin-left: 100px">
+    <form action="<c:url value="/customer/search"/>" method="get">
+        <table align="center" width="40%">
             <tr>
                 <td width="100px">客户名称</td>
                 <td width="40%">
-                    <input type="text" name="name">
+                    <input type="text" name="customer.name">
                 </td>
             </tr>
             <tr>
                 <td>客户性别</td>
                 <td>
-                    <select name="gender">
-                        <option value="">==请选择性别==</option>
+                    <select name="customer.sex">
                         <option value="male">male</option>
                         <option value="female">female</option>
                     </select>
@@ -28,19 +26,18 @@
             <tr>
             <td>手机</td>
             <td>
-                <input type="text" name="phone"/>
+                <input type="text" name="customer.phone"/>
             </td>
             </tr>
             <tr>
                 <td>邮箱</td>
                 <td>
-                    <input type="text" name="email"/>
+                    <input type="text" name="customer.email"/>
                 </td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
                 <td>
-
                     <input type="submit" value="搜索"/>
                     <input type="reset" value="重置"/>
                 </td>

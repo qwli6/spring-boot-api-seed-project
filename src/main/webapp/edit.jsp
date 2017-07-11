@@ -7,7 +7,7 @@
 <body>
 <h3 align="center">编辑客户</h3>
 <!-- enctype =" multipart/form-data  表示该页面可以是可以上传图片的"-->
-<form action="<c:url value='/customer/updateCustomer.action'/>" method="post" enctype="multipart/form-data">
+<form action="${pageContext.request.contextPath}/customer/update" method="post" enctype="multipart/form-data">
     <!-- 隐藏域-->
     <input type="hidden" name="cid" value="${customer.cid}"/>
     <table align="center">

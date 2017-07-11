@@ -1,6 +1,7 @@
 package com.student.service;
 
 import com.student.pojo.Customer;
+import com.student.vo.QueryVo;
 
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface CustomerService {
 
     //根据id 删除用户
     void deleteCustomer(String cid);
+
+    //高级查询
+    List<Customer> search(QueryVo queryVo);
 }
