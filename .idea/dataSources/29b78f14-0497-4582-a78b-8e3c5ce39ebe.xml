@@ -30,57 +30,95 @@
     <table id="22" parent="2" name="s_user"/>
     <column id="23" parent="21" name="cid">
       <Position>1</Position>
+      <Comment>文章id</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
     <column id="24" parent="21" name="title">
       <Position>2</Position>
+      <Comment>文章标题</Comment>
       <DataType>varchar(128)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="25" parent="21" name="s_content_cid_uindex">
+    <column id="25" parent="21" name="digest">
+      <Position>3</Position>
+      <Comment>文章摘要</Comment>
+      <DataType>varchar(128)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="26" parent="21" name="content">
+      <Position>4</Position>
+      <Comment>文章正文内容  html 格式</Comment>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="27" parent="21" name="content_md">
+      <Position>5</Position>
+      <Comment>文章正文内容 md 格式</Comment>
+      <DataType>text|0</DataType>
+    </column>
+    <column id="28" parent="21" name="create_dt">
+      <Position>6</Position>
+      <Comment>文章创建时间</Comment>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="29" parent="21" name="update_dt">
+      <Position>7</Position>
+      <Comment>文章上一次修改时间</Comment>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="30" parent="21" name="visit_url">
+      <Position>8</Position>
+      <Comment>文章访问 url</Comment>
+      <DataType>varchar(32)|0</DataType>
+    </column>
+    <column id="31" parent="21" name="visit_count">
+      <Position>9</Position>
+      <Comment>文章访问次数</Comment>
+      <DataType>mediumtext|0</DataType>
+    </column>
+    <index id="32" parent="21" name="s_content_cid_uindex">
       <ColNames>cid</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="26" parent="21" name="PRIMARY">
+    <key id="33" parent="21" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="27" parent="21" name="s_content_cid_uindex">
+    <key id="34" parent="21" name="s_content_cid_uindex">
       <ColNames>cid</ColNames>
       <UnderlyingIndexName>s_content_cid_uindex</UnderlyingIndexName>
     </key>
-    <column id="28" parent="22" name="uid">
+    <column id="35" parent="22" name="uid">
       <Position>1</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="29" parent="22" name="username">
+    <column id="36" parent="22" name="username">
       <Position>2</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="30" parent="22" name="password">
+    <column id="37" parent="22" name="password">
       <Position>3</Position>
       <DataType>varchar(128)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="31" parent="22" name="nickname">
+    <column id="38" parent="22" name="nickname">
       <Position>4</Position>
       <DataType>varchar(32)|0</DataType>
     </column>
-    <index id="32" parent="22" name="s_user_uid_uindex">
+    <index id="39" parent="22" name="s_user_uid_uindex">
       <ColNames>uid</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="33" parent="22" name="PRIMARY">
+    <key id="40" parent="22" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>uid</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="34" parent="22" name="s_user_uid_uindex">
+    <key id="41" parent="22" name="s_user_uid_uindex">
       <ColNames>uid</ColNames>
       <UnderlyingIndexName>s_user_uid_uindex</UnderlyingIndexName>
     </key>

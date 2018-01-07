@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="s_content" name="com.itqiwen.blog.entity.Content">
+        <id name="cid">
+            <generator class="native"/>
+        </id>
+        <property name="title" column="title"/>
+        <property name="digest" column="digest"/>
+
+        <property name="content" column="content"/>
+        <property name="contentMd" column="content_md"/>
+
+        <property name="createDt" column="create_dt"/>
+        <property name="updateDt" column="update_dt"/>
+
+        <property name="visitUrl" column="visit_url"/>
+        <property name="visitCount" column="visit_count"/>
+    </class>
+</hibernate-mapping>
