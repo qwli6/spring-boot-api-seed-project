@@ -37,7 +37,7 @@ public class MetasController {
         return "admin/category-edit";
     }
 
-    @RequestMapping(value = "/categoyr/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/category/add", method = RequestMethod.POST)
     public RestResponse<Meta> saveMeta(Meta meta){
         metaService.saveMeta(meta);
         return RestResponse.ok();

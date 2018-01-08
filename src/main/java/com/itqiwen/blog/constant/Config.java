@@ -9,4 +9,5 @@ public class Config {
     public static final String USER_NOT_ACTIVED = "1";//用户未激活
 
 
+    public static final String LOGIN_SESSION_KEY = "login_session_key";
 }
