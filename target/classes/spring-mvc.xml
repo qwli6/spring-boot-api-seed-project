@@ -10,13 +10,23 @@
     <!-- 扫描 controller 包下的 @Controller 注解-->
     <context:component-scan base-package="com.itqiwen.blog.web.controller"/>
 
-    <!-- 配置 springmvc 的注解驱动-->
-    <mvc:annotation-driven/>
-
+    <!--<mvc:annotation-driven/>-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/"/>
-        <property name="suffix" value=".jsp"/>
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".html"/>
     </bean>
+
+    <mvc:default-servlet-handler/>
+
+    <!-- 配置 springmvc 的注解驱动-->
+    <!-- 使用 ResponseBody 注解返回 Json 对象乱码问题，spring 版本 3.1 以上 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <!-- 文件上传-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
