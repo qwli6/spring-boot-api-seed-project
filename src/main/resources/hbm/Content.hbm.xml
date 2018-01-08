@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
     <class table="s_content" name="com.itqiwen.blog.entity.Content">
-        <id name="cid">
+        <id name="cid" type="java.lang.Integer">
             <generator class="native"/>
         </id>
-        <property name="title" column="title"/>
-        <property name="digest" column="digest"/>
+        <property name="title" column="title" type="java.lang.String"/>
+        <property name="digest" column="digest" type="java.lang.String"/>
 
-        <property name="content" column="content"/>
-        <property name="contentMd" column="content_md"/>
+        <property name="content" column="content" type="java.lang.String"/>
+        <property name="contentMd" column="content_md" type="java.lang.String"/>
 
-        <property name="createDt" column="create_dt"/>
-        <property name="updateDt" column="update_dt"/>
+        <property name="createDt" column="create_dt" type="java.lang.Integer"/>
+        <property name="updateDt" column="update_dt" type="java.lang.Integer" />
 
-        <property name="visitUrl" column="visit_url"/>
-        <property name="visitCount" column="visit_count"/>
+        <property name="visitUrl" column="visit_url" type="java.lang.String"/>
+        <property name="visitCount" column="visit_count" type="java.lang.Integer"/>
+        <property name="remarkCount" column="remark_count" type="java.lang.Integer"/>
+        <property name="status" column="status" type="java.lang.String"/>
+        <property name="type" column="type" type="java.lang.String"/>
+
+
+        <!-- 从 content 角度出发，这是一对多的配置，一篇 content 中含有多个 tags -->
+        <set name="tagSet" table="s_relationship" lazy="true" cascade="save-update, delete">
+            <key column="cid"/>
+            <many-to-many class="com.itqiwen.blog.entity.Meta" column="mid"/>
+        </set>
+
+        <many-to-one name="category" column="mid" class="com.itqiwen.blog.entity.Meta" cascade="save-update, delete"/>
+
     </class>
 </hibernate-mapping>

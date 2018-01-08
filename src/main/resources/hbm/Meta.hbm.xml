@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class table="s_metas" name="com.itqiwen.blog.entity.Meta">
+        <id name="mid">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name"/>
+        <property name="url" column="url"/>
+        <property name="type" column="type"/>
+        <property name="description" column="description"/>
+
+
+        <!-- 从 tag 角度出发，这是一对多的配置，一篇 tags 中含有多个多篇文章 -->
+        <set name="contentSet" table="s_relationship" lazy="true" cascade="save-update, delete">
+            <key column="mid"/>
+            <many-to-many class="com.itqiwen.blog.entity.Content" column="cid"/>
+        </set>
+
+        <!-- 从分类看文章-->
+        <set name="categoryContentSet" cascade="save-update, delete">
+            <key column="cid"/>
+            <one-to-many class="com.itqiwen.blog.entity.Content"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

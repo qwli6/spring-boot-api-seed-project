@@ -7,5 +7,6 @@
         <property name="username" column="username"/>
         <property name="password" column="password"/>
         <property name="nickname" column="nickname"/>
+        <property name="state" column="state"/>
     </class>
 </hibernate-mapping>

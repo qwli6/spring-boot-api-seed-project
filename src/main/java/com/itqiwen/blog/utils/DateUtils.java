@@ -695,11 +695,4 @@ public class DateUtils {
         tomorrow.set(13, 0);
         return Long.valueOf(String.valueOf(tomorrow.getTimeInMillis()).substring(0, 10));
     }
-
-
-    public static void main(String[] args){
-        int unixTimeByDate = getUnixTimeByDate(new Date());
-        System.out.println(unixTimeByDate);
-    }
-
 }
