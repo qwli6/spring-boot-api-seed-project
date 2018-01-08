@@ -10,5 +10,6 @@
 *.tar.gz
 *.rar
 hs_err_pid*
-.idea
-target
+/target/
+/.idea/
+/simple-blog.iml
