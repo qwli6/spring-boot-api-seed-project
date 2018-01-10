@@ -1,7 +1,8 @@
 package com.itqiwen.blog.web.controller;
 
-import com.itqiwen.blog.constant.Config;
-import com.itqiwen.blog.entity.User;
+
+import com.itqiwen.blog.config.Config;
+import com.itqiwen.blog.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
