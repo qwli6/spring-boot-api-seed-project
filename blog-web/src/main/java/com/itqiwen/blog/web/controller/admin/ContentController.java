@@ -88,7 +88,20 @@ public class ContentController extends BaseController {
      */
     @RequestMapping(value = "/content/new", method = RequestMethod.GET)
     public String newContent(){
-        return "admin/content_new";
+        return "admin/content_edit";
+    }
+
+    /**
+     * 编辑文章
+     */
+    @RequestMapping(value = "/content/edit/{cid}", method = RequestMethod.GET)
+    public String editContent(@PathVariable("cid")String cid, HttpServletRequest request){
+
+        //根据文章id 去查找文章内容
+        Content content = contentService.findContentById(cid);
+        request.setAttribute("content", content);
+        return "admin/content_edit";
+
     }
 
     /**
@@ -111,5 +124,22 @@ public class ContentController extends BaseController {
     public String updateContentState(@PathVariable("state")String state){
 
         return null;
+    }
+
+
+    @RequestMapping(value = "/content/save", method = RequestMethod.POST)
+    public String saveContent(Content content){
+        //判断content id 是否为空，如果不为null，说明是修改后保存文章，如果为 null 说明是新增内容
+        if(StringUtils.isEmpty(String.valueOf(content.getCid()))){
+            //修改后保存文章，修改content 的最近一次修改时间
+            content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
+            contentService.updateContent(content);
+        }else{
+            //新增文章
+            content.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));
+            content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
+
+            contentService.saveContent(content);
+        }
     }
 }
