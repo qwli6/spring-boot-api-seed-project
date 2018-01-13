@@ -61,7 +61,7 @@
                     </p>
                     <hr/>
 
-                    <div style="font-size: 16px;line-height: 24px;font-family: STHeiti,serif">
+                    <div style="font-size: 18px;line-height: 28px;font-family: STHeiti,serif">
                         ${content.content}
                     </div>
                 </div>
