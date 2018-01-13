@@ -14,7 +14,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <h1 style="padding-top: 32px;padding-bottom: 32px; padding-left: 16px;">码农全家桶</h1>
+        <h1 style="padding-top: 32px;padding-bottom: 32px; padding-left: 16px;"><a href="/" style="color: black; text-decoration: none">码农全家桶</a></h1>
     </div>
     <nav class="navbar navbar-default" style="background-color: white">
         <div class="container-fluid">
@@ -26,13 +26,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#" style="font-size: 18px;">码农全家桶</a>
+                <a class="navbar-brand" href="/" style="font-size: 18px;">码农全家桶</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#" style="font-size: 16px;">关于不荒 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#" style="font-size: 16px;">关于不荒 <span class="sr-only">(current)</span></a></li>
                     <li><a href="#" style="font-size: 16px;">好友</a></li>
                     <li><a href="#" style="font-size: 16px;">分享</a></li>
                     <li><a href="#" style="font-size: 16px;">推荐书单</a></li>
@@ -45,15 +45,15 @@
                     <li><a href="#" style="font-size: 16px;">微博</a></li>
                     <li><a href="#" style="font-size: 16px;">知乎</a></li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+            </div>
+        </div>
     </nav>
 
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
                 <div class="panel-body" style="font-size: 16px; line-height: 24px;color: #666666">
-                    <span>Simple-Blog</span> 是一个利用 SpringBoot, SpringDataJpa, Maven 以及 Freemarker 开发的一个项目，所有新学的知识都会在这上面展开。
+                    <span>Simple-Blog</span> 是一个利用 SpringBoot、SpringDataJpa、SpringMvc、Maven 以及 Freemarker 开发的一个项目，所有新学的知识都会在这上面展开。
                     <span style="color: red">注意：这套系统本来是准备给自己用的，因为比较符合自己的习惯</span>！如果你们要使用的话，难免会出现
                     一些不可描述的 Bug，如果有兴趣的话，可以来我的 <a href="https://github.com/selfassu/simple-blog" target="_blank"> Github</a>上看看，另外如果对你的胃口的话，给我一个 Star 鼓励鼓励我可好？非常感谢！
                 </div>
@@ -63,7 +63,7 @@
             <#list contents as content>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h2><a href="#" style="text-decoration: none">${content.title}</a></h2>
+                        <h2><a href="/article/show/${content.visitUrl}" style="text-decoration: none">${content.title}</a></h2>
 
                         <p class="text-left" style="font-family: Georgia,serif; font-size: 16px; color: gray">
                             ${(content.createDt*1000)?c?number?number_to_datetime}
