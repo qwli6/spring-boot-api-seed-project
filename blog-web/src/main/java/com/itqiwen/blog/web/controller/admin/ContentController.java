@@ -141,5 +141,7 @@ public class ContentController extends BaseController {
 
             contentService.saveContent(content);
         }
+
+        return null;
     }
 }

@@ -62,7 +62,6 @@ public class LoginController extends BaseController {
             return RestResponse.fail(msg);
         }
        return RestResponse.ok();
-
     }
 
 }

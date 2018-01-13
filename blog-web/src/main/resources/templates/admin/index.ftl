@@ -29,9 +29,32 @@
     </style>
 </head>
 <body>
-    <h1> 我是主页 body</h1>
+    <div>
+        <table style="border: solid 1px gray;" align="center" width="80%">
+            <thead>
+            <tr>
+                <th>文章标题</th>
+                <th>状态</th>
+                <th>发布时间</th>
+                <th>评论数</th>
+                <th>点击量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <#list page as content>
+            <tr>
+                <td>${content.title}(${(content.createDt*1000)?c?number?number_to_datetime})</td>
+                <td>${content.state}</td>
+                <td>fdd</td>
+                <td>dd</td>
+                <td>dd</td>
+                <td>dd</td>
+            </tr>
+            </#list>
+            </tbody>
+        </table>
+    </div>
 </body>
-<div>
-    <button type="button" class="button1">这是按钮</button>
-</div>
+
 </html>
