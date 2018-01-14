@@ -61,7 +61,7 @@
                     </p>
                     <hr/>
 
-                    <div style="font-size: 18px;line-height: 28px;font-family: STHeiti,serif">
+                    <div style="font-size: 18px;line-height: 28px;color: #666666">
                         ${content.content}
                     </div>
                 </div>
@@ -71,6 +71,7 @@
 
 
 </div>
+<#include "../common/copyright.ftl"/>
 
 </body>
 

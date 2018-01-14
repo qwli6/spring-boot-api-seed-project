@@ -2,6 +2,7 @@ package com.itqiwen.blog.web.controller;
 
 import com.itqiwen.blog.config.Config;
 import com.itqiwen.blog.domain.Content;
+import com.itqiwen.blog.domain.Metas;
 import com.itqiwen.blog.service.ContentService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * 前台页面控制器
@@ -32,6 +34,18 @@ public class IndexController  extends BaseController{
 
         Page<Content> contentList = contentService.findContentByCriteria(1, Config.PAGE_SIZE);
         model.addAttribute("contents", contentList.getContent());
+        Content content = contentList.getContent().get(1);
+        Metas metas = content.getMetas();
+        System.out.println("关联的分类：" + metas);
+
+        System.out.println("当前文章的标题：" + content.getTitle());
+
+        Set<Metas> tagSet = content.getTagSet();
+        System.out.println("tagSet:" + tagSet.size());
+        for (Metas meta :
+                tagSet) {
+            System.out.println("关联的标签： " + meta);
+        }
 
         return "user/index";
     }

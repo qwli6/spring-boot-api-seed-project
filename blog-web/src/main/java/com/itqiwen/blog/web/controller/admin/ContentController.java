@@ -27,7 +27,7 @@ import java.util.List;
  * @author liqiwen
  */
 @RequestMapping("admin")
-@RestController
+@Controller
 public class ContentController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContentController.class);
@@ -82,14 +82,7 @@ public class ContentController extends BaseController {
         return "common/post";
     }
 
-    /**
-     * 新增内容
-     * @return
-     */
-    @RequestMapping(value = "/content/new", method = RequestMethod.GET)
-    public String newContent(){
-        return "admin/content_edit";
-    }
+
 
     /**
      * 编辑文章
@@ -126,22 +119,4 @@ public class ContentController extends BaseController {
         return null;
     }
 
-
-    @RequestMapping(value = "/content/save", method = RequestMethod.POST)
-    public String saveContent(Content content){
-        //判断content id 是否为空，如果不为null，说明是修改后保存文章，如果为 null 说明是新增内容
-        if(StringUtils.isEmpty(String.valueOf(content.getCid()))){
-            //修改后保存文章，修改content 的最近一次修改时间
-            content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
-            contentService.updateContent(content);
-        }else{
-            //新增文章
-            content.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));
-            content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
-
-            contentService.saveContent(content);
-        }
-
-        return null;
-    }
 }

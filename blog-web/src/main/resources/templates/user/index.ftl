@@ -37,7 +37,7 @@
                     <li><a href="#" style="font-size: 16px;">分享</a></li>
                     <li><a href="#" style="font-size: 16px;">推荐书单</a></li>
                     <li><a href="#" style="font-size: 16px;">碎语</a></li>
-                    <li><a href="#" style="font-size: 16px;">日志列表</a></li>
+                    <li><a href="#" style="font-size: 16px;">文章存档</a></li>
                     <li><a href="#" style="font-size: 16px;">ISSUES</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -70,7 +70,7 @@
                         </p>
                         <hr/>
 
-                        <div style="font-size: 16px;line-height: 24px;font-family: STHeiti,serif">
+                        <div style="font-size: 16px;line-height: 24px;color: #666666">
                             ${content.content}
                         </div>
                     </div>
@@ -81,11 +81,11 @@
 
             <div class="panel panel-default">
                 <div class="panel-body text-center" style="font-size: 18px;">
-                    <ul class="list-inline" style="font-family: Georgia, serif">
-                        <li><a href="" style="text-decoration: none">上一页</a></li>
-                        <li><a href="" style="text-decoration: none">2</a></li>
-                        <li><a href="" style="text-decoration: none">下一页</a></li>
-                        <li><a href="" style="text-decoration: none">尾页</a></li>
+                    <ul class="list-inline">
+                        <li><a href="" style="text-decoration: none;">上一页</a></li>
+                        <li><a href="" style="text-decoration: none;font-family: Georgia, serif">2</a></li>
+                        <li><a href="" style="text-decoration: none;">下一页</a></li>
+                        <li><a href="" style="text-decoration: none;">尾页</a></li>
                     </ul>
                 </div>
             </div>
@@ -165,6 +165,7 @@
 
 </div>
 
+<#include "../common/copyright.ftl"/>
 </body>
 
 
