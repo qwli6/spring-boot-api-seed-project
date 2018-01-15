@@ -3,6 +3,7 @@
 <head>
 
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="/static/jquery/jquery-3.2.1.min.js"/>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style type="text/css">
         body{
@@ -18,7 +19,6 @@
     </div>
     <nav class="navbar navbar-default" style="background-color: white">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -54,15 +54,15 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2><a href="#" style="text-decoration: none">${content.title}</a></h2>
+                    <h1><a style="text-decoration: none;font-family: 'Hiragino Sans GB',serif;color: dodgerblue">${content.title}</a></h1>
 
                     <p class="text-left" style="font-family: Georgia,serif; font-size: 16px; color: gray">
                         ${(content.createDt*1000)?c?number?number_to_datetime}
                     </p>
                     <hr/>
 
-                    <div style="font-size: 18px;line-height: 28px;color: #666666">
-                        ${content.content}
+                    <div style="font-size: 16px;line-height: 28px;font-family: 'Hiragino Sans GB',serif">
+                        ${content.contentHtml}
                     </div>
                 </div>
             </div>

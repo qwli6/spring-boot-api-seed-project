@@ -66,44 +66,46 @@
 
 
     <div class="layui-body" id="target_body" style="margin-left: 8px; margin-right: 8px;margin-top: 8px;">
-        <form class="layui-form" action="">
+        <form class="layui-form" action="/admin/content/save" method="post">
             <div class="layui-form-item">
-                <input type="text" name="title" required  lay-verify="required"
+                <input type="text" name="title"
                        placeholder="请输入标题" autocomplete="off" class="layui-input">
             </div>
-            <div class="layui-form-item layui-form-text">
+            <div class="layui-form-item">
                 <div id="test-editormd">
-                    <textarea class="editormd-md-textarea" style="display:none;"></textarea>
+                    <textarea class="editormd-md-textarea" name="contentMd" style="display:none;"></textarea>
                     <!-- 接受 html 格式数据-->
-                    <textarea class="editormd-html-textarea"  name="html"></textarea>
+                    <textarea class="editormd-html-textarea"  name="contentHtml"></textarea>
 
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <input type="text" name="title" required  lay-verify="required"
+                <input type="text" name="visitUrl"
                        placeholder="文章访问标签，不带 / 标签" autocomplete="off" class="layui-input">
             </div>
 
             <div class="layui-form-item">
-                <input type="text" name="title" required  lay-verify="required"
+                <input type="text" name="tags"
                        placeholder="文章关联的标签，用 、 隔开" autocomplete="off" class="layui-input">
             </div>
 
             <div class="layui-form-item">
-                <input type="checkbox" name="like[write]" title="关于">
-                <input type="checkbox" name="like[read]" title="好友">
-                <input type="checkbox" name="like[dai]" title="分享">
-                <input type="checkbox" name="like[dai]" title="推荐书单">
-                <input type="checkbox" name="like[dai]" title="碎语">
-                <input type="checkbox" name="like[dai]" title="文章列表" checked>
-                <input type="checkbox" name="like[dai]" title="ISSUES">
+                <input type="checkbox" name="category_id" title="关于" value="1">
+                <input type="checkbox" name="category_id" title="好友" value="2">
+                <input type="checkbox" name="category_id" title="SpringBoot" value="3">
+                <input type="checkbox" name="category_id" title="Java8" value="4">
+                <input type="checkbox" name="category_id" title="日志归档" value="5" checked>
+                <input type="checkbox" name="category_id" title="广告" value="7">
+                <input type="checkbox" name="category_id" title="书单" value="6">
+                <input type="checkbox" name="category_id" title="胡说" value="8">
+                <input type="checkbox" name="category_id" title="ISSUES" value="9">
             </div>
 
             <div class="layui-form-item">
                 <button class="layui-btn layui-btn-normal">保存文章</button>
-                <button class="layui-btn layui-btn-warm">存为草稿</button>
-                <button class="layui-btn layui-btn-danger">预览文章</button>
+                <#--<button class="layui-btn layui-btn-warm">存为草稿</button>-->
+                <#--<button class="layui-btn layui-btn-danger">预览文章</button>-->
             </div>
         </form>
 
@@ -114,6 +116,14 @@
         <!-- 底部固定区域 -->
         © lqwit.com - 码农全家桶管理后台
     </div>
+
+
+    <script type="text/javascript">
+//        异步请求加载分类
+       $(document).ready(function () {
+
+       });
+    </script>
 
     <script type="text/javascript">
         var testEditor;
@@ -137,7 +147,7 @@
             });
         });
 
-        </script>
+    </script>
 
     <script>
         layui.use('form', function(){

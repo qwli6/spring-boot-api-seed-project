@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 public abstract class BaseController {
 
+
     /**
      * 设置标题
      * @param request

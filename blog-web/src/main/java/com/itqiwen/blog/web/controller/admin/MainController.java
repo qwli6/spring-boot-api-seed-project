@@ -1,20 +1,23 @@
 package com.itqiwen.blog.web.controller.admin;
 
 import com.itqiwen.blog.config.Config;
+import com.itqiwen.blog.config.ContentState;
+import com.itqiwen.blog.config.ContentType;
+import com.itqiwen.blog.domain.Category;
 import com.itqiwen.blog.domain.Content;
+import com.itqiwen.blog.domain.RestResponse;
 import com.itqiwen.blog.service.ContentService;
 import com.itqiwen.blog.service.LogService;
 import com.itqiwen.blog.utils.DateUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +35,8 @@ public class MainController {
 
     @Resource
     private ContentService contentService;
+
+
 
 
     @RequestMapping("/main")
@@ -72,9 +77,9 @@ public class MainController {
      * @return
      */
     @RequestMapping(value = "/content/save", method = RequestMethod.POST)
-    public String saveContent(Content content){
+    public String saveContent(Content content, @RequestParam("category_id")Integer category_id, @RequestParam("tags")String tags){
         //判断content id 是否为空，如果不为null，说明是修改后保存文章，如果为 null 说明是新增内容
-        if(StringUtils.isEmpty(String.valueOf(content.getCid()))){
+        if(content.getCid() != null){
             //修改后保存文章，修改content 的最近一次修改时间
             content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
             contentService.updateContent(content);
@@ -82,11 +87,30 @@ public class MainController {
             //新增文章
             content.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));
             content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
+            if(content.getContentHtml().length() < 20) {
+                content.setDigest(content.getContentHtml());
+            }else {
+                content.setDigest(content.getContentHtml().substring(0, 20));//设置摘要
+            }
+            content.setState(ContentState.PUBLISH.getState());
+            content.setType(ContentType.PUBLIC.getType());
+            content.setVisitCount(0);
+            content.setRemarkCount(0);
+
+            Category category = new Category();
+            category.setId(category_id);
+            content.setCategory(category);
+
+
+
+//            Metas metas = new Metas();
+//            metas.setMid(Integer.parseInt(category));
+//            content.setMetas(metas);
 
             contentService.saveContent(content);
         }
 
-        return null;
+        return "redirect:/admin/content/1";
     }
 
 
@@ -97,5 +121,15 @@ public class MainController {
     public String logList(){
 
         return "admin/log";
+    }
+
+
+    /**
+     * 查找全部分类
+     */
+    @RequestMapping(value = "/category/list", method = RequestMethod.POST)
+    public RestResponse getCategoryList(){
+//        List<Metas> metaByType = metaService.findMetaByType(Types.CATEGORY.getType());
+        return RestResponse.ok();
     }
 }
