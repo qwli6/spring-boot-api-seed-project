@@ -34,7 +34,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <#list categoryList as category>
-                        <li><a href="/${category.url}" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">${category.name}</a></li>
+                        <#if category.id != 1>
+                            <li><a href="/${category.url}" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">${category.name}</a></li>
+                        </#if>
                     </#list>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

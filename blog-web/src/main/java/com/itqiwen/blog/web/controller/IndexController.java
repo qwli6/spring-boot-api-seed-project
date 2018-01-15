@@ -43,7 +43,10 @@ public class IndexController  extends BaseController{
     public String mainHome(Model model){
         findCategoryList(model);
         findTagList(model);
-        Page<Content> contentList = contentService.findContentByCriteria(1, Config.PAGE_SIZE);
+        Category category = new Category();
+        category.setId(1); //查询 index 首页展示的文章
+        Page<Content> contentList = contentService.findContentByCriteria(1,
+                Config.PAGE_SIZE, category);
         model.addAttribute("contents", contentList.getContent());
         return "user/index";
     }
@@ -108,5 +111,19 @@ public class IndexController  extends BaseController{
         List<Content> contents = contentService.findContentsByCategory(category);
         model.addAttribute("contents", contents);
         return "user/category_content";
+    }
+
+
+    /**
+     * issues 页面
+     */
+    @RequestMapping("/issues")
+    public String issues(Model model){
+
+        findCategoryList(model);
+        findTagList(model);
+
+
+        return "user/issues";
     }
 }
