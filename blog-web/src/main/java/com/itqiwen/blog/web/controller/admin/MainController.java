@@ -63,6 +63,18 @@ public class MainController {
     }
 
     /**
+     * 编辑文章
+     */
+    @RequestMapping(value = "/content/modify/{cid}", method = RequestMethod.GET)
+    public String modifyContent(@PathVariable("cid")String cid, Model model){
+        Content content = contentService.findContentById(cid);
+        if(content != null){
+            model.addAttribute("content", content);
+        }
+        return "admin/content_edit";
+    }
+
+    /**
      * 查看垃圾箱文章列表
      */
     @RequestMapping(value = "/content/garbage", method = RequestMethod.GET)
@@ -100,19 +112,26 @@ public class MainController {
             Category category = new Category();
             category.setId(category_id);
             content.setCategory(category);
-
-
-
-//            Metas metas = new Metas();
-//            metas.setMid(Integer.parseInt(category));
-//            content.setMetas(metas);
-
             contentService.saveContent(content);
         }
 
         return "redirect:/admin/content/1";
     }
 
+
+    /**
+     * 删除文章
+     */
+    @RequestMapping(value = "/content/del/{cid}", method = RequestMethod.GET)
+    public String deleteContent(@PathVariable("cid")String cid){
+
+        Content content = contentService.findContentById(cid);
+        if(content != null){
+            contentService.deleteContent(content);
+        }
+
+        return "redirect:/admin/content/1";
+    }
 
     /**
      * 查看用户日志操作

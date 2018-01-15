@@ -68,12 +68,16 @@
     <div class="layui-body" id="target_body" style="margin-left: 8px; margin-right: 8px;margin-top: 8px;">
         <form class="layui-form" action="/admin/content/save" method="post">
             <div class="layui-form-item">
+                <input type="hidden" name="cid" value="${content.cid}" autocomplete="off" class="layui-input">
+            </div>
+
+            <div class="layui-form-item">
                 <input type="text" name="title"
-                       placeholder="请输入标题" autocomplete="off" class="layui-input">
+                       placeholder="请输入标题" value="${content.title}" autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-item">
                 <div id="test-editormd">
-                    <textarea class="editormd-md-textarea" name="contentMd" style="display:none;"></textarea>
+                    <textarea class="editormd-md-textarea" name="contentMd" style="display:none;">${content.contentMd}</textarea>
                     <!-- 接受 html 格式数据-->
                     <textarea class="editormd-html-textarea"  name="contentHtml"></textarea>
 
@@ -82,7 +86,7 @@
 
             <div class="layui-form-item">
                 <input type="text" name="visitUrl"
-                       placeholder="文章访问标签，不带 / 标签" autocomplete="off" class="layui-input">
+                       placeholder="文章访问标签，不带 / 标签" value="${content.visitUrl}" autocomplete="off" class="layui-input">
             </div>
 
             <div class="layui-form-item">

@@ -93,8 +93,8 @@
                     <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">${content.remarkCount}</span></td>
                     <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">${content.visitCount}</span></td>
                     <td>
-                        <a href="" class="layui-btn layui-btn-danger">删除</a>
-                        <a href="" class="layui-btn layui-btn-normal">编辑</a>
+                        <a href="/admin/content/del/${content.cid}" class="layui-btn layui-btn-danger">删除</a>
+                        <a href="/admin/content/modify/${content.cid}" class="layui-btn layui-btn-normal">编辑</a>
                     </td>
                 </tr>
             </#list>
