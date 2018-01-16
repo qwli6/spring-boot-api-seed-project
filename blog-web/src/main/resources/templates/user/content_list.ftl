@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
-
+    <!--
+        日志归档界面，这个界面比较复杂，需要单独做一个界面出来
+    -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-    <script href="/static/jquery/jquery-3.2.1.min.js"></script>
+    <script src="/static/jquery/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style type="text/css">
         body{
             background-color: #F4F4F4;
         }
     </style>
-
 </head>
 <body>
 <div class="container">
@@ -30,10 +31,8 @@
                 </button>
                 <a class="navbar-brand" href="/" style="font-size: 18px;font-family: 'Hiragino Sans GB',serif">码农全家桶</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <!-- 分类栏目，不显示 index 分类-->
                     <#list categoryList as category>
                         <#if category.id != 1>
                             <li><a href="/${category.url}" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">${category.name}</a></li>
@@ -41,9 +40,9 @@
                     </#list>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">RSS</a></li>
-                    <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">微博</a></li>
-                    <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">知乎</a></li>
+                    <li><a style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">RSS</a></li>
+                    <li><a style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">微博</a></li>
+                    <li><a style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">知乎</a></li>
                 </ul>
             </div>
         </div>
@@ -51,29 +50,18 @@
 
     <div class="row">
         <div class="col-lg-9">
-            <!-- 文章列表头部 bolg 声明-->
-            <#include "content_header.ftl"/>
-
-            <#list contents as content>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h1><a href="/article/show/${content.visitUrl}"
-                               style="text-decoration: none;font-family: 'Hiragino Sans GB',serif;color:dodgerblue">${content.title}</a></h1>
-
-                        <p class="text-left text-bottom" style="font-family: Georgia,serif; font-size: 16px;
-                        color: gray;">
-                            ${(content.createDt*1000)?c?number?number_to_datetime}
-                        </p>
-                        <hr/>
-
-                        <div style="font-size: 16px;font-family:'Hiragino Sans GB',serif;line-height: 24px;">
-                            ${content.contentHtml}
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <#list archives?keys as key>
+                        <h3> ${key}</h3>
+                        <ul style="line-height: 28px;">
+                        <#list archives[key] as content>
+                           <li style="list-style: none"><a href="/article/show/${content.visitUrl}" style="text-decoration: none; color: dodgerblue; font-size: 16px;">${content.title}</a></li>
+                        </#list>
+                        </ul>
+                    </#list>
                 </div>
-            </#list>
-
-        <#include "page.ftl"/>
+            </div>
         </div>
         <div class="col-lg-3">
             <#include "personal.ftl"/>

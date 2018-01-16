@@ -29,35 +29,10 @@
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <ul class="list-unstyled" style="font-size: 16px;font-family: Georgia,serif; text-decoration: none">
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-            <li><a href="">2017年1月</a> (20) </li>
-        </ul>
-    </div>
-</div>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <ul class="list-unstyled" style="font-size: 16px;font-family: Georgia,serif; text-decoration: none">
-            <li><a href="">有用的连接1</a></li>
-            <li><a href="">有用的连接2</a></li>
-            <li><a href="">有用的连接3</a></li>
-            <li><a href="">有用的连接4</a></li>
-            <li><a href="">有用的连接5</a></li>
-            <li><a href="">有用的连接6</a></li>
+        <ul style="font-size: 16px;font-family: 'Hiragino Sans GB',serif;line-height: 28px; list-style: none">
+            <#list archives?keys as key>
+            <li><a href="" style="color: dodgerblue; text-decoration: none;">${key}</a> (${archives[key]?size}) </li>
+            </#list>
         </ul>
     </div>
 </div>

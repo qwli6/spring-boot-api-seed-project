@@ -66,6 +66,23 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <!--PC版-->
+                    <div id="SOHUCS" sid="${content.cid}"></div>
+                    <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+                    <script type="text/javascript">
+                        window.changyan.api.config({
+                            appid: 'cytq2ja8d',
+                            conf: 'prod_b6e1bfb11fb49f8a49cea12d721257f3'
+                        });
+                    </script>
+                </div>
+            </div>
+
+
         </div>
     </div>
 

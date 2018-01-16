@@ -13,17 +13,7 @@
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo">Simple-Blog 管理后台</div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-right">
-
-            <li class="layui-nav-item"><a>欢迎您！<span>不荒</span></a></li>
-            <li class="layui-nav-item"><a>当前时间: <span id="mytime"></span></a></li>
-            <li class="layui-nav-item"><a href="/"><i class="layui-icon">&#xe609;</i>&nbsp;&nbsp;去首页</a></li>
-        </ul>
-    </div>
-
+    <#include "admin_header.ftl"/>
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
@@ -178,6 +168,7 @@
                 path    : "/static/editormd/lib/",
                 imageUpload : true,
                 toolbarAutoFixed: false, //固定工具栏
+                htmlDecode: true,
                 fontSize: "16px",
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL : "./php/upload.php",

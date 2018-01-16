@@ -1,0 +1,71 @@
+*{
+    margin: 0;padding: 0;
+}
+html,body{
+    height: 100%;
+}
+body{
+    overflow: hidden;
+    background-image: url(https://ojtkyre9w.qnssl.com/bg.jpg);
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+.login-dlg{
+    width: 500px;
+    height: 100%;
+    margin: auto;
+}
+.clearfix:before{display:table;content:""}.clearfix:after{clear:both;display:table;content:""}
+#loginForm{
+    height: 240px;
+    position: relative;
+    top: 50%;
+    margin-top: -180px;
+}
+#loginForm input{
+    box-sizing: border-box;
+    background-color:transparent;
+    border: none;
+    border-bottom: solid 1px #FFF;
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    padding:3px 5px;
+    color: #FFF;
+}
+#loginForm input:focus{
+    outline: none;
+}
+#loginForm button{
+    width: 100%;
+    height: 40px;
+    background-color:#5EB95E;
+    font-size: 20px;
+    color: #FFF;
+    cursor: pointer;
+    border: none;
+}
+#loginForm button:hover{
+    background-color: #4aaa4a;
+    transition: all .1s ease;
+}
+
+#loginForm>*{
+    margin: 20px 0;
+}
+#loginForm input::-webkit-input-placeholder{
+    color: #DDD;
+}
+.exception-msg{
+    background-color:#F37B1D;
+    border:solid 2px #E56C0C;
+    border-radius: 1px;
+    font-size: 20px;
+    color: #FFF;
+    font-weight: bold;
+    padding: 7px 5px;
+    position: relative;
+    top: 50%;
+    margin-top: -300px;
+}

@@ -3,21 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>Simple-Blog 后台管理系统</title>
     <link rel="stylesheet" href="/static/admin/css/layui.css"/>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo">Simple-Blog 管理后台</div>
-        <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-right">
-
-            <li class="layui-nav-item"><a>欢迎您！ <span>不荒</span></a></li>
-            <li class="layui-nav-item"><a>当前时间: <span id="mytime"></span></a></li>
-            <li class="layui-nav-item"><a href="/"><i class="layui-icon">&#xe609;</i>&nbsp;&nbsp; 去首页</a></li>
-        </ul>
-    </div>
+    <#include "admin_header.ftl"/>
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
@@ -38,7 +29,7 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">多说评论</a>
+                    <a href="javascript:;">畅言评论</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">评论列表</a></dd>
                         <dd><a href="javascript:;">功能管理</a></dd>
@@ -71,30 +62,30 @@
             </colgroup>
             <thead>
             <tr>
-                <th>标题</th>
-                <th>状态</th>
-                <th>评论数</th>
-                <th>点击数</th>
-                <th>操作</th>
+                <th style="font-size: 18px;">标题</th>
+                <th style="font-size: 18px;">状态</th>
+                <th style="font-size: 18px;">评论数</th>
+                <th style="font-size: 18px;">点击数</th>
+                <th style="font-size: 18px;">操作</th>
             </tr>
             </thead>
             <tbody>
             <#list contents as content>
                 <tr>
                     <td>
-                        <a href="/article/show/${content.visitUrl}" style="font-size: 16px;">
+                        <a href="/article/show/${content.visitUrl}" style="font-size: 16px; color: dodgerblue">
                             ${content.title}
-                                <span style="font-family: Georgia,serif">
+                                <span style="font-family: Georgia,serif;color: gray">
                                 (${(content.createDt*1000)?c?number?number_to_datetime})
                             </span>
                         </a>
                     </td>
-                    <td style="font-size: 16px;">${content.state}</td>
+                    <td style="font-size: 16px;"><i class="layui-icon">&#xe618;</i></td>
                     <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">${content.remarkCount}</span></td>
                     <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">${content.visitCount}</span></td>
                     <td>
-                        <a href="/admin/content/del/${content.cid}" class="layui-btn layui-btn-danger">删除</a>
-                        <a href="/admin/content/modify/${content.cid}" class="layui-btn layui-btn-normal">编辑</a>
+                        <a href="/admin/content/del/${content.cid}" class="layui-btn layui-btn-danger"> <i class="layui-icon">&#xe640;</i></a>
+                        <a href="/admin/content/modify/${content.cid}" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe642;</i></a>
                     </td>
                 </tr>
             </#list>
@@ -103,7 +94,6 @@
     </div>
 
     <div class="layui-footer">
-        <!-- 底部固定区域 -->
         © lqwit.com - 码农全家桶管理后台
     </div>
 </div>

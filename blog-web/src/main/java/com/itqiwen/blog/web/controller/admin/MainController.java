@@ -92,9 +92,30 @@ public class MainController {
     public String saveContent(Content content, @RequestParam("category_id")Integer category_id, @RequestParam("tags")String tags){
         //判断content id 是否为空，如果不为null，说明是修改后保存文章，如果为 null 说明是新增内容
         if(content.getCid() != null){
-            //修改后保存文章，修改content 的最近一次修改时间
-            content.setUpdateDt(DateUtils.getUnixTimeByDate(new Date()));
-            contentService.updateContent(content);
+            Content oldContent = contentService.findContentById(String.valueOf(content.getCid()));
+            //根据查询出来的 oldContent 和文章页面的提交过来的 content 进行判断，如果不同，则是更改！
+            /**
+             * 修改页面的要素
+             * 1， 标题
+             * 2. 摘要： 页面不存在，但是有这个字段
+             * 3. 内容： md
+             * 4. 内容： html
+             * 5. 访问 url
+             * 6. 最后修改时间
+             */
+
+            oldContent.setUpdateDt(DateUtils.getUnixTimeByDate(new Date())); //设置上一次修改的时间
+
+
+            oldContent.setTitle(content.getTitle()); //设置修改后的文章标题
+            oldContent.setContentMd(content.getContentMd()); //设置修改的 md 内容
+            oldContent.setContentHtml(content.getContentHtml()); //设置修改后的 html 内容
+            oldContent.setVisitUrl(content.getVisitUrl()); //设置修改后的访问 url
+
+
+
+
+            contentService.updateContent(oldContent);
         }else{
             //新增文章
             content.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));

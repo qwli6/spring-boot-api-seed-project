@@ -9,6 +9,14 @@
         body{
             background-color: #F4F4F4;
         }
+
+        .nav>li>a:focus{
+            color: dodgerblue;
+        }
+
+        .nav>li>a:hover{
+            color: .dodgerblue;
+        }
     </style>
 </head>
 <body>
@@ -52,13 +60,11 @@
         <div class="col-lg-9">
             <#include "content_header.ftl"/>
 
-
             <#list contents as content>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h1><a href="/article/show/${content.visitUrl}" style="text-decoration: none;
-                        font-family: 'Hiragino Sans GB',serif">${content.title}</a></h1>
-
+                        font-family: 'Hiragino Sans GB',serif; color: dodgerblue">${content.title}</a></h1>
                         <p class="text-left" style="font-family: Georgia,serif; font-size: 16px; color: gray">
                             ${(content.createDt*1000)?c?number?number_to_datetime}
                         </p>
