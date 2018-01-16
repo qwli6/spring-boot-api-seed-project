@@ -32,13 +32,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#" style="font-size: 16px;">关于不荒 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#" style="font-size: 16px;">好友</a></li>
-                    <li><a href="#" style="font-size: 16px;">分享</a></li>
-                    <li><a href="#" style="font-size: 16px;">推荐书单</a></li>
-                    <li><a href="#" style="font-size: 16px;">碎语</a></li>
-                    <li><a href="#" style="font-size: 16px;">日志列表</a></li>
-                    <li><a href="#" style="font-size: 16px;">ISSUES</a></li>
+                    <#list categoryList as category>
+                        <#if category.id != 1>
+                            <li><a href="/${category.url}" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">${category.name}</a></li>
+                        </#if>
+                    </#list>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#" style="font-size: 16px;">RSS</a></li>
