@@ -47,9 +47,8 @@ public class MainController {
     @RequestMapping(value = "/content/{pageCode}", method = RequestMethod.GET)
     public String findContentList(@PathVariable("pageCode")Integer pageCode,
                                   Model model){
-        Page<Content> page = contentService.findContentByCriteria(pageCode, Config.ADMIN_PAGE_SIZE);
-        List<Content> contents = page.getContent();
-        model.addAttribute("contents", contents);
+        Page<Content> contentPage = contentService.findContentByCriteria(pageCode, Config.ADMIN_PAGE_SIZE);
+        model.addAttribute("contentPage", contentPage);
         return "admin/index";
     }
 

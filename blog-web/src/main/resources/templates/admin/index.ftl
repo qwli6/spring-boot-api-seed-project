@@ -70,7 +70,7 @@
             </tr>
             </thead>
             <tbody>
-            <#list contents as content>
+            <#list contentPage.content as content>
                 <tr>
                     <td>
                         <a href="/article/show/${content.visitUrl}" style="font-size: 16px; color: dodgerblue">
@@ -91,6 +91,30 @@
             </#list>
             </tbody>
         </table>
+        <!-- 后台文章列表分页-->
+        <div class="layui-btn-group">
+            <#if contentPage.number + 1 == 1>
+                <a class="layui-disabled layui-btn-normal layui-btn-radius layui-btn"><i class="layui-icon">&#xe65a;</i></a>
+                <#else>
+                    <a href="/admin/content/${contentPage.number}"
+                       class="layui-btn-normal layui-btn-radius layui-btn"><i class="layui-icon">&#xe65a;</i></a>
+            </#if>
+            <#list 1 .. contentPage.totalPages as i>
+                <#if contentPage.number + 1 == i>
+                    <a class="layui-btn-normal layui-btn-radius layui-btn layui-disabled">#{i}</a>
+                <#else>
+                    <a href="/admin/content/${i}" class="layui-btn-normal layui-btn-radius layui-btn">#{i}</a>
+                </#if>
+            </#list>
+
+            <#if contentPage.number + 1 == contentPage.totalPages>
+                <a class="layui-disabled layui-btn-normal layui-btn-radius layui-btn"><i class="layui-icon">&#xe65b;</i></a>
+                <#else>
+                    <a href="/admin/content/${contentPage.number+2}" class=" layui-btn-normal layui-btn-radius layui-btn"><i class="layui-icon">&#xe65b;</i></a>
+
+            </#if>
+
+        </div>
     </div>
 
     <div class="layui-footer">
