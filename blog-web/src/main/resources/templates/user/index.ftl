@@ -54,11 +54,12 @@
             <!-- 文章列表头部 bolg 声明-->
             <#include "content_header.ftl"/>
 
-            <#list contents as content>
+            <#list contentPage.content as content>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h1><a href="/article/show/${content.visitUrl}"
-                               style="text-decoration: none;font-family: 'Hiragino Sans GB',serif;color:dodgerblue">${content.title}</a></h1>
+                               style="text-decoration: none;font-family: 'Hiragino Sans GB',serif;
+                               color:dodgerblue">${content.title}</a></h1>
 
                         <p class="text-left text-bottom" style="font-family: Georgia,serif; font-size: 16px;
                         color: gray;">
@@ -73,7 +74,10 @@
                 </div>
             </#list>
 
-        <#include "page.ftl"/>
+            <!-- 总页数大于 1才展示页脚，否则不展示-->
+            <#if contentPage.totalPages gt 1>
+                <#include "page.ftl"/>
+            </#if>
         </div>
         <div class="col-lg-3">
             <#include "personal.ftl"/>
