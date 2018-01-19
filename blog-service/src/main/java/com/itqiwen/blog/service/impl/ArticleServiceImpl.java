@@ -1,9 +1,7 @@
 package com.itqiwen.blog.service.impl;
 
-import com.itqiwen.blog.config.ContentState;
-import com.itqiwen.blog.config.ContentType;
 import com.itqiwen.blog.dao.ContentRepository;
-import com.itqiwen.blog.domain.Category;
+import com.itqiwen.blog.domain.Menu;
 import com.itqiwen.blog.domain.Content;
 import com.itqiwen.blog.service.ContentService;
 import org.springframework.data.domain.*;
@@ -21,15 +19,6 @@ public class ContentServiceImpl implements ContentService {
     private ContentRepository contentRepository;
 
 
-    @Override
-    public List<Content> findContentByPage(int pageCode, Integer pageSize) {
-        Pageable pageable = new PageRequest(pageCode - 1, pageSize, Sort.Direction.DESC, "createDt");
-        List<Content> content = contentRepository.findContentsByStateAndType(ContentState.PUBLISH.getState(), ContentType.PUBLIC.getType());
-        contentRepository.findAll(pageable);
-//        Example<Content> example = new Example<Content>();
-        return null;
-    }
-
     /**
      * 查询全部分类下的文章
      * 带分页
@@ -42,8 +31,8 @@ public class ContentServiceImpl implements ContentService {
         //hibernate 页码是从 0开始，这里需要 -1
         Pageable pageable =new PageRequest(pageCode-1, pageSize, Sort.Direction.DESC, "createDt");
         Content content = new Content();
-        content.setState(ContentState.PUBLISH.getState());
-        content.setType(ContentType.PUBLIC.getType());
+//        content.setState(ContentState.PUBLISH.getState());
+//        content.setType(ContentType.PUBLIC.getType());
         Example<Content> contentExample = Example.of(content);
         return contentRepository.findAll(contentExample, pageable);
     }
@@ -57,23 +46,22 @@ public class ContentServiceImpl implements ContentService {
      * @return
      */
     @Override
-    public Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Category category) {
+    public Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Menu category) {
         Pageable pageable = new PageRequest(pageCode - 1, pageSize, Sort.Direction.DESC, "createDt");
         Content content = new Content();
-        content.setState(ContentState.PUBLISH.getState());
-        content.setType(ContentType.PUBLIC.getType());
-        content.setCategory(category);
+//        content.setState(ContentState.PUBLISH.getState());
+//        content.setType(ContentType.PUBLIC.getType());
         Example<Content>  contentExample = Example.of(content);
         return contentRepository.findAll(contentExample, pageable);
     }
 
 
     @Override
-    public List<Content> findContentByCriteria(Category category) {
+    public List<Content> findContentByCriteria(Menu category) {
         Content content = new Content();
-        content.setState(ContentState.PUBLISH.getState());
-        content.setType(ContentType.PUBLIC.getType());
-        content.setCategory(category);
+//        content.setState(ContentState.PUBLISH.getState());
+//        content.setType(ContentType.PUBLIC.getType());
+//        content.setCategory(category);
         Example<Content> contentExample = Example.of(content);
         Sort sort = new Sort(Sort.Direction.DESC, "createDt");
         return contentRepository.findAll(contentExample, sort);
@@ -91,7 +79,8 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public Content findContentByVisitUrl(String url) {
-        return contentRepository.findContentByVisitUrl(url);
+//        return contentRepository.findContentByVisitUrl(url);
+        return null;
     }
 
     @Override
@@ -100,8 +89,9 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<Content> findContentsByCategory(Category category) {
-        return contentRepository.findContentsByCategory(category);
+    public List<Content> findContentsByCategory(Menu category) {
+//        return contentRepository.findContentsByCategory(category);
+        return null;
     }
 
     @Override

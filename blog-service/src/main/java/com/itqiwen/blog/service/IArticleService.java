@@ -1,13 +1,12 @@
 package com.itqiwen.blog.service;
 
-import com.itqiwen.blog.domain.Category;
+import com.itqiwen.blog.domain.Menu;
 import com.itqiwen.blog.domain.Content;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface ContentService {
-    List<Content> findContentByPage(int pageCode, Integer pageSize);
 
     /**
      * 待条件分页
@@ -25,7 +24,7 @@ public interface ContentService {
      * @param category  //当前分类
      * @return
      */
-    Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Category category);
+    Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Menu category);
 
     /**
      * 保存文章
@@ -53,7 +52,7 @@ public interface ContentService {
      */
     void updateContent(Content content);
 
-    List<Content> findContentsByCategory(Category category);
+    List<Content> findContentsByCategory(Menu category);
 
     void deleteContent(Content content);
 
@@ -64,5 +63,5 @@ public interface ContentService {
      */
     void updateVisitCount(Integer cid, int visitCount);
 
-    List<Content> findContentByCriteria(Category category);
+    List<Content> findContentByCriteria(Menu category);
 }

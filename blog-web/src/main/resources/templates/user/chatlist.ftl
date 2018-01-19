@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
 
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
     <script href="/static/jquery/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
     <style type="text/css">
         body{
             background-color: #F4F4F4;
@@ -22,15 +22,8 @@
     <nav class="navbar navbar-default" style="background-color: white">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="navbar-brand" href="/" style="font-size: 18px;font-family: 'Hiragino Sans GB',serif">码农全家桶</a>
             </div>
-
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <#list categoryList as category>
@@ -40,7 +33,6 @@
                     </#list>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">RSS</a></li>
                     <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">微博</a></li>
                     <li><a href="#" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif">知乎</a></li>
                 </ul>
@@ -58,27 +50,30 @@
                 </div>
             </div>
             <#--<#list contents as content>-->
-                <#--<div class="panel panel-default">-->
-                    <#--<div class="panel-body">-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
                         <#--<h1><a href="/article/show/${content.visitUrl}"-->
                                <#--style="text-decoration: none;font-family: 'Hiragino Sans GB',serif;color:dodgerblue">${content.title}</a></h1>-->
+                            <h1>标题</h1>
 
-                        <#--<p class="text-left text-bottom" style="font-family: Georgia,serif; font-size: 16px;-->
-                        <#--color: gray;">-->
+                        <p class="text-left text-bottom" style="font-family: Georgia,serif; font-size: 16px;
+                        color: gray;">
                             <#--${(content.createDt*1000)?c?number?number_to_datetime}-->
-                        <#--</p>-->
-                        <#--<hr/>-->
+                            时间...
+                        </p>
+                        <hr/>
 
-                        <#--<div style="font-size: 16px;font-family:'Hiragino Sans GB',serif;line-height: 24px;">-->
+                        <div style="font-size: 16px;font-family:'Hiragino Sans GB',serif;line-height: 24px;">
                             <#--${content.contentHtml}-->
-                        <#--</div>-->
-                    <#--</div>-->
-                <#--</div>-->
+                            内容
+                        </div>
+                    </div>
+                </div>
             <#--</#list>-->
 
-        <#include "page.ftl"/>
+        <#--<#include "page.ftl"/>-->
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" style="padding-left: 8px">
             <#include "personal.ftl"/>
         </div>
     </div>

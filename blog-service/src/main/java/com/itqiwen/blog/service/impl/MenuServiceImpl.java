@@ -1,7 +1,7 @@
 package com.itqiwen.blog.service.impl;
 
 import com.itqiwen.blog.dao.CategoryRepository;
-import com.itqiwen.blog.domain.Category;
+import com.itqiwen.blog.domain.Menu;
 import com.itqiwen.blog.service.CategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +17,12 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> findAllCategory() {
-        return (List<Category>) categoryRepository.findAll();
+    public List<Menu> findAllCategory() {
+        return (List<Menu>) categoryRepository.findAll();
     }
 
     @Override
-    public Category findCategoryByUrl(String url) {
+    public Menu findCategoryByUrl(String url) {
         return categoryRepository.findCategoryByUrl(url);
     }
 }

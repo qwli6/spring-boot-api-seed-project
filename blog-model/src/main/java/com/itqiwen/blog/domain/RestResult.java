@@ -6,7 +6,7 @@ package com.itqiwen.blog.domain;
  * @author selfassu@gmail.com
  * @param <T>
  */
-public class RestResponse<T> {
+public class RestResult<T> {
 
     /**
      * 服务器响应数据
@@ -33,35 +33,35 @@ public class RestResponse<T> {
      */
     private long timestamp;
 
-    public RestResponse() {
+    public RestResult() {
         this.timestamp = System.currentTimeMillis() / 1000;
     }
 
-    public RestResponse(boolean success) {
+    public RestResult(boolean success) {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.success = success;
     }
 
-    public RestResponse(boolean success, T payload) {
+    public RestResult(boolean success, T payload) {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.success = success;
         this.payload = payload;
     }
 
-    public RestResponse(boolean success, T payload, int code) {
+    public RestResult(boolean success, T payload, int code) {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.success = success;
         this.payload = payload;
         this.code = code;
     }
 
-    public RestResponse(boolean success, String msg) {
+    public RestResult(boolean success, String msg) {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.success = success;
         this.msg = msg;
     }
 
-    public RestResponse(boolean success, String msg, int code) {
+    public RestResult(boolean success, String msg, int code) {
         this.timestamp = System.currentTimeMillis() / 1000;
         this.success = success;
         this.msg = msg;
@@ -108,36 +108,36 @@ public class RestResponse<T> {
         this.timestamp = timestamp;
     }
 
-    public static RestResponse ok() {
-        return new RestResponse(true);
+    public static RestResult ok() {
+        return new RestResult(true);
     }
 
-    public static <T> RestResponse ok(T payload) {
-        return new RestResponse(true, payload);
+    public static <T> RestResult ok(T payload) {
+        return new RestResult(true, payload);
     }
 
-    public static <T> RestResponse ok(int code) {
-        return new RestResponse(true, null, code);
+    public static <T> RestResult ok(int code) {
+        return new RestResult(true, null, code);
     }
 
-    public static <T> RestResponse ok(T payload, int code) {
-        return new RestResponse(true, payload, code);
+    public static <T> RestResult ok(T payload, int code) {
+        return new RestResult(true, payload, code);
     }
 
-    public static RestResponse fail() {
-        return new RestResponse(false);
+    public static RestResult fail() {
+        return new RestResult(false);
     }
 
-    public static RestResponse fail(String msg) {
-        return new RestResponse(false, msg);
+    public static RestResult fail(String msg) {
+        return new RestResult(false, msg);
     }
 
-    public static RestResponse fail(int code) {
-        return new RestResponse(false, null, code);
+    public static RestResult fail(int code) {
+        return new RestResult(false, null, code);
     }
 
-    public static RestResponse fail(int code, String msg) {
-        return new RestResponse(false, msg, code);
+    public static RestResult fail(int code, String msg) {
+        return new RestResult(false, msg, code);
     }
 
 }

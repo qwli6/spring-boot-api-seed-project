@@ -5,25 +5,19 @@ import javax.persistence.*;
 /**
  * 日志实体类
  */
-@Table(name = "s_logs")
+@Table(name = "sblog_logs",catalog = "simple_blog")
 @Entity
-public class Log {
+public class Logs {
 
-    @Id
-    @GeneratedValue
     private Integer id; //日志id
     private String action; //日志动作，比如删除文章，发布文章，访问后台等等
-
-    @Column(name = "create_dt")
     private Integer createDt; //日志的操作时间
     private String username;//操作人账号
     private String nickname;//操作人昵称
-
-    @Column(name = "ip_address")
     private String ipAddress;//操作的ip地址
 
 
-
+    @Column(name = "ip_address")
     public String getIpAddress() {
         return ipAddress;
     }
@@ -32,6 +26,9 @@ public class Log {
         this.ipAddress = ipAddress;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -40,6 +37,7 @@ public class Log {
         this.id = id;
     }
 
+    @Column(name = "username", length = 45)
     public String getUsername() {
         return username;
     }
@@ -48,6 +46,7 @@ public class Log {
         this.username = username;
     }
 
+    @Column(name = "nickname", length = 45)
     public String getNickname() {
         return nickname;
     }
@@ -56,6 +55,7 @@ public class Log {
         this.nickname = nickname;
     }
 
+    @Column(name = "action",length = 45)
     public String getAction() {
         return action;
     }
@@ -64,6 +64,7 @@ public class Log {
         this.action = action;
     }
 
+    @Column(name = "create_dt")
     public Integer getCreateDt() {
         return createDt;
     }
@@ -74,7 +75,7 @@ public class Log {
 
     @Override
     public String toString() {
-        return "Log{" +
+        return "Logs{" +
                 "id=" + id +
                 ", action='" + action + '\'' +
                 ", createDt=" + createDt +
