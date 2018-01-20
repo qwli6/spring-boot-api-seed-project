@@ -5,6 +5,7 @@
         有些分类文章中的布局一样，所以就复用了
         比如 spring-boot 和 java8 这两个页面内容是一致的，因此复用界面
     -->
+    <link rel="icon" href="http://obyg3yq9k.bkt.clouddn.com/favicon.png"/>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="/static/jquery/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

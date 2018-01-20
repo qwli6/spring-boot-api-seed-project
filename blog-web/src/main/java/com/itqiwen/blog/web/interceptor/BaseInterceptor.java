@@ -1,9 +1,11 @@
 package com.itqiwen.blog.web.interceptor;
 
+import com.itqiwen.blog.domain.BlogCommon;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class BaseInterceptor implements HandlerInterceptor {
 
+    @Resource
+    private BlogCommon blogCommon;
     /**
      * 访问路径之前，访问需要做的事情
      * 1. 写日志，什么用户操作了什么
@@ -28,7 +32,6 @@ public class BaseInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         //返回false，表示拦截，返回true 表示不拦截
-        System.out.println("进入拦截器....");
         return true;
     }
 
@@ -41,8 +44,12 @@ public class BaseInterceptor implements HandlerInterceptor {
      * @throws Exception
      */
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
+    public void postHandle(HttpServletRequest httpServletRequest,
+                           HttpServletResponse httpServletResponse,
+                           Object o, ModelAndView modelAndView) throws Exception {
+        if (modelAndView != null) {
+            modelAndView.addObject("blogCommon", blogCommon);
+        }
     }
 
     /**

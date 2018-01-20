@@ -2,7 +2,7 @@ package com.itqiwen.blog.web.controller;
 
 
 import com.itqiwen.blog.config.Config;
-import com.itqiwen.blog.domain.User;
+import com.itqiwen.blog.domain.BlogSystem;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,16 +35,16 @@ public abstract class BaseController {
     /**
      * 获取请求绑定登录的对象
      */
-    public User user(HttpServletRequest request){
+    public BlogSystem user(HttpServletRequest request){
         HttpSession session = request.getSession();
         if(null == session){
             return null;
         }
-        return (User) session.getAttribute(Config.LOGIN_SESSION_KEY);
+        return (BlogSystem) session.getAttribute(Config.LOGIN_SESSION_KEY);
     }
 
-    public String getUid(HttpServletRequest request){
-        return this.user(request).getUid();
+    public Integer getUid(HttpServletRequest request){
+        return this.user(request).getSystemId();
     }
 
     /**

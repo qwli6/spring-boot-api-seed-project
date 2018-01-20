@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="icon" href="http://obyg3yq9k.bkt.clouddn.com/favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Simple-Blog 后台管理系统</title>
     <link rel="stylesheet" href="/static/admin/css/layui.css"/>
@@ -17,22 +18,22 @@
                     <a class="" href="javascript:">Article 文章</a>
                     <dl class="layui-nav-child">
                         <dd class="layui-this"><a>文章列表</a></dd>
-                        <dd><a href="/admin/content/new">添加文章</a></dd>
-                        <dd><a href="/admin/content/garbage">回收站</a></dd>
+                        <dd><a href="/admin/article/new">添加文章</a></dd>
+                        <dd><a href="/admin/article/trash">回收站</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">目录和标签</a>
+                    <a href="javascript:">目录和标签</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">目录</a></dd>
-                        <dd><a href="javascript:;">标签</a></dd>
+                        <dd><a href="javascript:">目录</a></dd>
+                        <dd><a href="javascript:">标签</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">畅言评论</a>
+                    <a href="javascript:">畅言评论</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">评论列表</a></dd>
-                        <dd><a href="javascript:;">功能管理</a></dd>
+                        <dd><a href="javascript:">评论列表</a></dd>
+                        <dd><a href="javascript:">功能管理</a></dd>
                         <dd><a href="">分析统计</a></dd>
                     </dl>
                 </li>
@@ -40,8 +41,8 @@
                 <li class="layui-nav-item">
                     <a href="javascript:">系统设置</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">静态数据</a></dd>
-                        <dd><a href="javascript:;">账号设置</a></dd>
+                        <dd><a href="javascript:">静态数据</a></dd>
+                        <dd><a href="javascript:">账号设置</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>

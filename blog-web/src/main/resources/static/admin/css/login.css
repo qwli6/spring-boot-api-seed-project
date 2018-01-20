@@ -43,6 +43,7 @@ body{
     background-color:#5EB95E;
     font-size: 20px;
     color: #FFF;
+    outline: none;
     cursor: pointer;
     border: none;
 }

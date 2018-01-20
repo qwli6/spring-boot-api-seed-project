@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="http://obyg3yq9k.bkt.clouddn.com/favicon.png"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>Simple-Blog 后台管理系统</title>
     <link rel="stylesheet" href="/static/admin/css/layui.css"/>
 </head>
 <body class="layui-layout-body">
@@ -15,7 +16,11 @@
 
             <li class="layui-nav-item"><a>欢迎您！ <span>不荒</span></a></li>
             <li class="layui-nav-item"><a>当前时间: <span id="mytime"></span></a></li>
-            <li class="layui-nav-item"><a href="/"><i class="layui-icon">&#xe609;</i>&nbsp;&nbsp; 去首页</a></li>
+            <li class="layui-nav-item">
+                <a href="/" target="_blank">
+                    <i class="layui-icon">&#xe609;</i>&nbsp;&nbsp; 去首页
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -25,8 +30,8 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:">Article 文章</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/admin/content/page/1">文章列表</a></dd>
-                        <dd><a href="/admin/content/new">添加文章</a></dd>
+                        <dd><a href="/admin/article/page/1">文章列表</a></dd>
+                        <dd><a href="/admin/article/new">添加文章</a></dd>
                         <dd class="layui-this"><a>回收站</a></dd>
                     </dl>
                 </li>

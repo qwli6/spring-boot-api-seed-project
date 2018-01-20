@@ -1,7 +1,7 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC; border-radius: 4px;">
     <div class="panel-body" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif;">
-        <p>不荒原名李启文，生于 1993-9-24，24 岁，英文 ID：selfassu。</p>
-        <p>- 于 2016 年 3 月毕业于
+        <p>不荒原名李启文，生于 <span style="font-family: Georgia,serif">1993-9-24，24</span> 岁，英文 ID：selfassu。</p>
+        <p>- 于 <span style="font-family: Georgia,serif">2016</span> 年 <span style="font-family: Georgia,serif">3</span> 月毕业于
             <a href="http://www.hbmykjxy.cn/"  target="_blank" style="font-family: 'Hiragino Sans GB',serif;color: dodgerblue">
                  湖北民族学院科技学院
             </a>。
@@ -13,13 +13,19 @@
                   style="text-decoration: none;color: dodgerblue;" target="_blank">Github</a> 上积极参与开源社区。</p>
     </div>
 </div>
-<div class="panel panel-default">
+<div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC; border-radius: 4px;">
     <div class="panel-body">
         <ul class="list-inline">
         <#list tagList as tag>
-            <li>
-                <a href="" style="font-size: 16px;font-family: 'Hiragino Sans GB',serif;color: dodgerblue;">
-                ${tag.name}
+            <li style="line-height: 42px;">
+                <a href="/tag/${tag.urlName}" style="font-size: 12px;
+                    font-family: 'Hiragino Sans GB', serif;
+                    color: #252F35;
+                    border: 2px solid #D8E6F2;
+                    border-radius: 4px;
+                    padding: 8px;
+                    text-decoration: none;">
+                    ${tag.title}
                 </a>
             </li>
         </#list>
@@ -27,12 +33,16 @@
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <ul style="font-size: 16px;font-family: 'Hiragino Sans GB',serif;line-height: 28px; list-style: none">
-            <#list archives?keys as key>
-            <li><a href="" style="color: dodgerblue; text-decoration: none;">${key}</a> (${archives[key]?size}) </li>
-            </#list>
-        </ul>
+<div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC; border-radius: 4px;">
+    <div class="panel-body text-left">
+    <#list archives as archive>
+        <div style="font-size: 16px;font-family: 'Georgia',serif;line-height: 28px;">
+            <a href="/archive/${archive.urlName}"
+               style="color: dodgerblue; text-decoration: none;">
+                ${archive.title}
+            </a>
+            <span style="font-family: Georgia,serif;">(${archive.count}) </span>
+        </div>
+    </#list>
     </div>
 </div>

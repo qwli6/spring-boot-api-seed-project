@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>用户登录</title>
+    <link rel="icon" href="http://obyg3yq9k.bkt.clouddn.com/favicon.png"/>
     <link rel="stylesheet" href="/static/admin/css/login.css"/>
 </head>
 <body>
@@ -9,8 +10,8 @@
     <!-- ajax 提交表单，提交之前验证表单信息是否完整  return checkForm(); 阻止表单提交-->
     <form method="post" id="loginForm" autocomplete="off" onsubmit="return checkForm();">
         <input type="hidden" name="_csrf" value="1234567890"> <!-- 防止 csrf 攻击-->
-        <input name="username" type="text" placeholder="username"/>
-        <input name="password" type="password" placeholder="password"/>
+        <input name="username" type="text" placeholder="username" required/>
+        <input name="password" type="password" placeholder="password" required/>
         <button id="btn-submit">Login</button>
     </form>
     <#--显示错误消息-->
@@ -28,6 +29,8 @@
             return false;
         }
 
+        //登录成功，重定向到首页
+        window.location.href='/admin/main';
         return false;
 
 

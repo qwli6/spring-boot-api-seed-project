@@ -1,67 +1,60 @@
 package com.itqiwen.blog.web.controller;
 
-import com.itqiwen.blog.config.Config;
-import com.itqiwen.blog.config.LogActions;
-import com.itqiwen.blog.domain.Log;
-import com.itqiwen.blog.domain.RestResponse;
-import com.itqiwen.blog.domain.User;
-import com.itqiwen.blog.service.LogService;
-import com.itqiwen.blog.service.UserService;
-import com.itqiwen.blog.utils.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
+import com.itqiwen.blog.domain.RestResult;
+import com.itqiwen.blog.domain.BlogSystem;
+import com.itqiwen.blog.service.ILogService;
+import com.itqiwen.blog.service.ISystemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @Controller
-public class LoginController extends BaseController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+public class LoginController{
 
     @Resource
-    private UserService userService;
+    private ISystemService systemService;
 
     @Resource
-    private LogService logService;
+    private ILogService logService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(){
-        return "admin/login";
+    public ModelAndView loginPage(HttpServletRequest request){
+        ModelAndView modelAndView = new ModelAndView("admin/login");
+        if(request.getParameter("error") != null){
+            modelAndView.addObject("errorMsg", request.getSession().getAttribute("exceptionMsg"));
+        }
+        return modelAndView;
     }
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public RestResponse doLogin(User user, HttpServletRequest request,
-                                HttpServletResponse response){
-        System.out.println("登录用户名：" + user.getUsername() + "==" + user.getPassword());
+    public RestResult doLogin(BlogSystem user, HttpServletRequest request,
+                              HttpServletResponse response){
 
-        try {
-            User loginUser = userService.login(user.getUsername(), user.getPassword());
-            request.getSession().setAttribute(Config.LOGIN_SESSION_KEY, loginUser);
-
-            //记录登录日志
-            Log log = new Log();
-            log.setAction(LogActions.LOGIN.getAction());
-            log.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));
-            log.setIpAddress(request.getRemoteAddr());
-            log.setNickname(loginUser.getNickname());
-            log.setUsername(loginUser.getUsername());
-            logService.insertLogs(log);
-        }catch (Exception e){
-            String msg = "登录失败";
-            return RestResponse.fail(msg);
-        }
-       return RestResponse.ok();
+//        try {
+//            BlogSystem loginUser = userService.login(user.getUsername(), user.getPassword());
+//            request.getSession().setAttribute(Config.LOGIN_SESSION_KEY, loginUser);
+//
+//            //记录登录日志
+//            Logs log = new Logs();
+//            log.setAction(LogActions.LOGIN.getAction());
+//            log.setCreateDt(DateUtils.getUnixTimeByDate(new Date()));
+//            log.setIpAddress(request.getRemoteAddr());
+//            log.setNickname(loginUser.getNickname());
+//            log.setUsername(loginUser.getUsername());
+//            logService.insertLogs(log);
+//        }catch (Exception e){
+//            String msg = "登录失败";
+//            return RestResult.fail(msg);
+//        }
+       return RestResult.ok();
     }
 
 }

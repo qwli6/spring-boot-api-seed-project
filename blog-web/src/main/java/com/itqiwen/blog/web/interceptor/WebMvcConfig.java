@@ -16,6 +16,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
     @Resource
     private BaseInterceptor interceptor;
 
+    @Resource
+    private AdminPostInterceptor adminPostInterceptor;
+
     /**
      * 把自己写的拦截器添加到 mvc 组件中去
      * @param registry
@@ -23,6 +26,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor);
+        registry.addInterceptor(adminPostInterceptor);
     }
 
     /**
