@@ -23,15 +23,16 @@
 
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <#list categoryList as category>
-                        <#if category.id != 1>
-                            <li><a href="/${category.url}">${category.name}</a></li>
-                        </#if>
-                    </#list>
+                <#list menuList as menu>
+                    <#if (menu.id > 1)>
+                        <li><a href="/${menu.url}">${menu.title}</a></li>
+                    </#if>
+                </#list>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/list">归档</a></li>
                     <li><a href="https://weibo.com/5091257436" target="_blank">微博</a></li>
-                    <li><a href="https://www.zhihu.com/people/www.lqwit.com/activities">知乎</a></li>
+                    <li><a href="https://www.zhihu.com/people/www.lqwit.com/activities" target="_blank">知乎</a></li>
                 </ul>
             </div>
         </div>
@@ -41,20 +42,19 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body blog">
-                    <a class="blog-title">${content.title}</a>
-                    <p class="blog-create-time">${(content.createDt*1000)?c?number?number_to_datetime}</p>
+                    <a class="blog-title">${article.title}</a>
+                    <p class="blog-create-time">${(article.createDate*1000)?c?number?number_to_datetime}</p>
                     <div class="blog-divider"></div>
                     <div class="blog-content">
-                        ${content.contentHtml}
+                        ${article.html}
                     </div>
                 </div>
             </div>
 
-
             <div class="panel panel-default">
                 <div class="panel-body">
                     <!--PC版-->
-                    <div id="SOHUCS" sid="${content.cid}"></div>
+                    <div id="SOHUCS" sid="${article.articleId}"></div>
                     <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
                     <script type="text/javascript">
                         window.changyan.api.config({
@@ -64,8 +64,6 @@
                     </script>
                 </div>
             </div>
-
-
         </div>
     </div>
 

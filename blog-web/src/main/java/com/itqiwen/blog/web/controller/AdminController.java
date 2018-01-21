@@ -126,6 +126,9 @@ public class AdminController {
         }else{
             //保存文章，主要关注分类，日志列表以及标签
             //先把文章保存，然后在开线程去保存一些附属信息
+            article.setRate(0);
+            article.setCreateDate(DateUtils.getUnixTimeByDate(new Date()));
+            article.setLastEditDate(DateUtils.getUnixTimeByDate(new Date()));
             articleService.saveArticle(article);
 
             new Thread(() -> {
@@ -169,14 +172,14 @@ public class AdminController {
      * 删除文章
      * post 请求
      */
-    @RequestMapping(value = "/article/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/article/delete/", method = RequestMethod.POST)
     public ModelAndView deleteArticle(@RequestParam("articleId") Integer articleId){
         ModelAndView modelAndView = new ModelAndView();
         Article article = articleService.findArticleById(articleId);
         if(article != null){
             articleService.deleteArticle(article);
         }
-        modelAndView.setViewName("redirect:/admin/article/1");
+        modelAndView.setViewName("redirect:/admin/article/list/1");
         return modelAndView;
     }
 }

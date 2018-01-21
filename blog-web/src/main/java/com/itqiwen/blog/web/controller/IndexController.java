@@ -114,102 +114,31 @@ public class IndexController {
     public ModelAndView showArticle(@PathVariable("url")String url){
         ModelAndView modelAndView = new ModelAndView();
         Article article = articleService.findArticleByUrl(url);
+        findMenuList(modelAndView);
         new Thread(() -> {
-            Long rate = article.getRate();
+            Integer rate = article.getRate();
             rate ++;
             articleService.updateRate(article.getArticleId(), rate);
         }).start();
         modelAndView.setViewName("user/post");
-        modelAndView.addObject("content", article);
+        modelAndView.addObject("article", article);
         return modelAndView;
     }
 
 
-    @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public ModelAndView aboutMe(){
+
+
+    @RequestMapping(value = "/{menuName}", method = RequestMethod.GET)
+    public ModelAndView menu(@PathVariable("menuName")String menuName){
         ModelAndView modelAndView = new ModelAndView();
+        Menu menu = menuService.findMenuByUrl(menuName);
         findMenuList(modelAndView);
-        findTagList(modelAndView);
         findArchiveList(modelAndView);
+        findTagList(modelAndView);
+        Page<Article> articlePage = articleService.findContentByCriteria(1, Article.PAGE_SIZE, menu);
+        modelAndView.addObject("articlePage", articlePage);
         modelAndView.setViewName("user/index");
-        Page<Article> articlePage = articleService.findArticleByCriteria(pageCode, Article.PAGE_SIZE, (short) 2);
-        System.out.println("articlePage:" + articlePage.getContent().size());
-        modelAndView.addObject("articlePage", articlePage);
         return modelAndView;
-    }
-
-
-    @RequestMapping(value = "/chatlist", method = RequestMethod.GET)
-    public ModelAndView chatList(){
-        ModelAndView modelAndView = new ModelAndView();
-        findMenuList(modelAndView);
-        findTagList(modelAndView);
-        findArchiveList(modelAndView);
-        modelAndView.setViewName("user/chatList");
-        Page<Article> articlePage = articleService.findArticleByCriteria(pageCode, Article.PAGE_SIZE, (short) 8);
-        modelAndView.addObject("articlePage", articlePage);
-        return modelAndView;
-    }
-
-
-    @RequestMapping(value = "/menu/{url}", method = RequestMethod.GET)
-    public ModelAndView menu(@PathVariable("url")String url){
-        ModelAndView modelAndView = new ModelAndView();
-        Menu menu = menuService.findMenuByUrl(url);
-        switch (menu.getId()){
-            //关于
-            case 2:
-                modelAndView.setViewName("redirect:/about");
-                return modelAndView;
-            //好友
-            case 3:
-                modelAndView.setViewName("redirect:/friends");
-                return modelAndView;
-            //springboot
-            case 4:
-                modelAndView.setViewName("redirect:/springboot");
-                return modelAndView;
-            //java8
-            case 5:
-                modelAndView.setViewName("redirect:/java8");
-                break;
-            //日志列表
-            case 6:
-                modelAndView.setViewName("redirect:/list");
-                return modelAndView;
-            case 7://推荐书单
-                modelAndView.setViewName("redirect:/booklist");
-                return modelAndView;
-            case 8://白话
-                modelAndView.setViewName("redirect:/chatlist");
-                return modelAndView;
-            default:
-                modelAndView.setViewName("user/index");
-                return modelAndView;
-        }
-//        List<Article> contents = articleService.findContentsByCategory(category);
-        //文章归档
-        Map<String, List<Article>> archives = archives();
-//        model.addAttribute("archives", archives);
-//        model.addAttribute("contents", contents);
-//        switch (url){
-//            case "about":
-//                return "user/category_content";
-//            case "spring-boot":
-//                return "user/course";
-//            case "java8":
-//                return "user/course";
-//            case "archives":
-//                return "user/archives";
-//            case "books":
-//                return "user/course";
-//            case "friends":
-//                return "user/course";
-//
-//
-//        }
-//        return "";
-        return null;
     }
 
 

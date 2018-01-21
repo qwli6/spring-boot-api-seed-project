@@ -83,8 +83,7 @@ body{
 .blog .blog-divider{
     width:100%;
     height:1px;
-    border-top:1px
-    solid #EEEEEE;
+    border-top:1px solid #EEEEEE;
     clear:both;
     margin-top: -8px;
 }

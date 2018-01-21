@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!--
-        有些分类文章中的布局一样，所以就复用了
-        比如 spring-boot 和 java8 这两个页面内容是一致的，因此复用界面
-    -->
     <link rel="icon" href="http://obyg3yq9k.bkt.clouddn.com/favicon.png"/>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="/static/jquery/jquery-3.2.1.min.js"></script>
@@ -24,7 +20,6 @@
                 <a class="navbar-brand" href="/">码农全家桶</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <#list categoryList as category>

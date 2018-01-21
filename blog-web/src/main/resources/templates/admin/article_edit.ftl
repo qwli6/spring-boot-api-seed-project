@@ -14,42 +14,39 @@
             background-color: #EEEEEE;
         }
 
-        .layui-form p span{
-            background-color: white;
-            border-radius: 4px;
+        .on{
+            background-color: dodgerblue;
             padding: 4px 16px;
+            font-size: 16px;
+            font-family: "Hiragino Sans GB",serif;
             color: white;
-            display:inline-block;
+            outline: none;
+            border-radius: 90px;
+            cursor:pointer;
+            border-width: 0;
+            text-align: center;
+        }
+
+        .off{
+            background-color: #bbbbbb;
+            padding: 4px 16px;
+            font-family: "Hiragino Sans GB",serif;
+            font-size: 16px;
+            text-align: center;
+            color: #757575;
+            outline: none;
+            border-width: 0;
+            border-radius: 90px;
             cursor:pointer;
         }
 
-        .button1 {
-            display: inline-block;
-            padding: 15px 25px;
-            font-size: 24px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            outline: none;
-            color: #fff;
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 4px;
-            box-shadow: 0 4px #999;
+        .on:active{
+            background-color: #1e50ff;
         }
 
-        .button1:hover {background-color: #3e8e41}
-
-        .button1:active {
-            background-color: #3e8e41;
-            box-shadow: 0 5px #666;
-            transform: translateY(4px);
+        .off:active{
+            background-color: #999999;
         }
-
-        .layui-form p span.on{
-            background-color: #01AAED;
-        }
-
 
     </style>
 
@@ -64,7 +61,7 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:">Article 文章</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/admin/article/1">文章列表</a></dd>
+                        <dd><a href="/admin/article/list/1">文章列表</a></dd>
                         <dd class="layui-this"><a>添加文章</a></dd>
                         <dd><a href="/admin/article/trash">回收站</a></dd>
                     </dl>
@@ -118,8 +115,8 @@
             <#else>
                 <div class="layui-form-item">
                     <input type="text" name="title"
-                           placeholder="请输入标题，不要超过 60 个字符" style="width: 100%;
-                    height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; ">
+                           placeholder="请输入标题，不要超过 60 个字符" class="layui-input" style="
+                    height: 36px; font-size: 16px; padding-left: 16px; border: 1px solid #DDDDDD; ">
                 </div>
             </#if>
 
@@ -144,42 +141,29 @@
 
             <#if content??>
                 <div class="layui-form-item">
-                    <input type="text" name="tags" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
+                    <input type="text" class="layui-input" name="tags" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
                 </div>
             <#else>
                 <div class="layui-form-item">
-                    <input type="text" name="tags" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
+                    <input type="text" class="layui-input" name="tags" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
                 </div>
             </#if>
 
 
             <#if content??>
                 <div class="layui-form-item">
-                    <input type="text" name="urlName" autocomplete="off" class="layui-input" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD;"/>
+                    <input type="text" name="url" autocomplete="off" class="layui-input" style="height: 36px; font-size: 16px; padding-left: 16px; border: 1px solid #DDDDDD;"/>
                 </div>
                 <#else>
                 <div class="layui-form-item">
-                    <input type="text" name="urlName" placeholder="友好的 URL 链接名称" style="height: 36px; font-size: 18px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
+                    <input type="text" name="url" placeholder="友好的 URL 链接名称（选填）" class="layui-input" style="height: 36px; font-size: 16px; padding-left: 16px; border: 1px solid #DDDDDD; "/>
                 </div>
             </#if>
 
-
-
-
-            <div class="layui-form-item">
-
-                <input type="hidden" id="xx"/>
-                <p id='model'>
-                    <span><i class="layui-icon" style="font-size: 26px; color: darkgrey;">&#xe64c;</i></span>&nbsp;&nbsp;&nbsp;
-                    <span><i class="layui-icon" style="font-size: 26px; color: darkgrey;">&#xe641;</i></span>
-                </p>
-
+                <input id="menuId" name="menuId" value="1" type="hidden"/>
+            <div class="layui-form-item menu">
                 <#list menuList as menu>
-                    <#if menu.title == "index">
-                        <input type="button" name="menuId" title="${menu.title}" value="${menu.id}" checked>
-                        <#else>
-                        <input type="button" name="menuId" title="${menu.title}" value="${menu.id}">
-                    </#if>
+                    <input type="button" value="${menu.title}">&nbsp;&nbsp;
                 </#list>
             </div>
 
@@ -204,47 +188,35 @@
        });
     </script>
 
-    <script type="text/javascript">
-        var mSpan = $("#model").find("span");
-        $(mSpan[0]).addClass("on");
-        $("#xx").val("0");
-        mSpan[0].onclick = function () {
-            if($(mSpan[0]).hasClass("on")){
-                $(mSpan[0]).removeClass();
-                $(mSpan[1]).addClass("on");
-                $("#xx").val("1");
-            }else{
-                $(mSpan[0]).addClass("on");
-                $(mSpan[1]).removeClass();
-                $("#xx").val("0")
-
+        <script type="text/javascript">
+            var button = $(".menu").find("input");
+            for(var i = 0; i < button.length; i++){
+                if(i === 0){
+                    $(button[i]).addClass("on");
+                }else{
+                    $(button[i]).addClass("off");
+                }
             }
-        };
 
-        mSpan[1].onclick = function () {
-            if($(mSpan[1]).hasClass("on")){
-                $(mSpan[1]).removeClass();
-                $(mSpan[0]).addClass("on");
-                $("#xx").val("0");
-
-            }else{
-                $(mSpan[1]).addClass("on");
-                $(mSpan[0]).removeClass();
-                $("#xx").val("1");
+            for(var i = 0; i < button.length; i++){
+                (function(){
+                    var index = i;
+                    $(button[index]).click(function(event) {
+                        if($(button[index]).hasClass("off")){
+                            $(button[index]).removeClass("off");
+                            $(button[index]).addClass("on");
+                            $("#menuId").val(index + 1);
+                            for(var j = 0; j < button.length; j++){
+                                if(j !== index){
+                                    $(button[j]).removeClass("on");
+                                    $(button[j]).addClass("off");
+                                }
+                            }
+                        }
+                    });
+                })();
             }
-        }
-
-
-//        for(var i = 0; i < $(mSpan).length; i++){
-//            mSpan[0].onclick = function () {
-//                var siblings = this.parentNode.children;
-//                for(var j=0; j < siblings.length; j++){
-//                    siblings[j].removeClass();
-//                }
-//                this.addClass("on");
-//            }
-//        }
-    </script>
+        </script>
 
     <script type="text/javascript">
         var testEditor;

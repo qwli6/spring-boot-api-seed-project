@@ -31,10 +31,9 @@
                             <li><a href="/${menu.url}">${menu.title}</a></li>
                         </#if>
                     </#list>
-                        <li><a href="/list">日志列表</a></li>
-
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/list">归档</a></li>
                     <li><a href="https://weibo.com/5091257436" target="_blank">微博</a></li>
                     <li><a href="https://www.zhihu.com/people/www.lqwit.com/activities" target="_blank">知乎</a></li>
                 </ul>
@@ -44,21 +43,13 @@
 
     <div class="row">
         <div class="col-lg-9">
-            <!-- 文章列表头部 bolg 声明-->
-            <div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC;border-radius: 4px;">
-                <div class="panel-body" style="font-size: 16px; line-height: 28px;font-family: 'Georgia',serif;">
-                    <span>Simple-Blog</span> 是一个利用 SpringBoot、SpringDataJpa、SpringMVC、Maven 以及 Freemarker 开发的一个项目，所有新学的知识都会在这上面展开。
-                    <span style="color: red">注意：这套系统本来是准备给自己用的，因为比较符合自己的习惯</span>！如果你们要使用的话，难免会出现
-                    一些不可描述的 Bug，如果有兴趣的话，可以来我的 <a href="https://github.com/selfassu/simple-blog" style="text-decoration: none; color: dodgerblue" target="_blank"> Github</a>上看看，另外如果对你的胃口的话，给我一个 Star 鼓励鼓励我可好？非常感谢！
-                </div>
-            </div>
-
             <#list articlePage.content as article>
                 <div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC;border-radius: 4px;">
                     <div class="panel-body blog">
-                        <a class="blog-title" href="/article/show/${article.urlName}">${article.title}</a>
+                        <a class="blog-title" href="/article/show/${article.url}">${article.title}</a>
                         <p class="blog-create-time">
                             ${(article.createDate*1000)?c?number?number_to_datetime}
+                            <span style="float: right">标签一、标签二</span>
                         </p>
                         <div class="blog-divider"></div>
 
