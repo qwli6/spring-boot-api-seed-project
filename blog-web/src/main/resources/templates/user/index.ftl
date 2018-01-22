@@ -7,7 +7,7 @@
     <script src="/static/jquery/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/common/base.css" rel="stylesheet"/>
-    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet"/>
     <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
     <script >hljs.initHighlightingOnLoad();</script>
 </head>
@@ -18,7 +18,7 @@
             <a href="/" style="color: black; text-decoration: none;font-family: 'Hiragino Sans GB',serif">码农全家桶</a>
         </h1>
     </div>
-    <nav class="navbar navbar-default" style="background-color: white;box-shadow: 0 0 1px 1px #CCCCCC;border-radius: 4px;">
+    <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">码农全家桶</a>
@@ -44,12 +44,12 @@
     <div class="row">
         <div class="col-lg-9">
             <#list articlePage.content as article>
-                <div class="panel panel-default" style="box-shadow: 0 0 1px 1px #CCCCCC;border-radius: 4px;">
+                <div class="panel panel-default">
                     <div class="panel-body blog">
                         <a class="blog-title" href="/article/show/${article.url}">${article.title}</a>
                         <p class="blog-create-time">
                             ${(article.createDate*1000)?c?number?number_to_datetime}
-                            <span style="float: right">标签一、标签二</span>
+                            <span style="float: right">${article.clickCount}</span>
                         </p>
                         <div class="blog-divider"></div>
 

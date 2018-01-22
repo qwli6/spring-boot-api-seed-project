@@ -192,6 +192,22 @@ body{
     transform: translateY(4px);
 }
 
+.navbar{
+    border: #DDDDDD solid 1px;
+    border-radius: 2px;
+}
+
+.col-lg-3 div{
+    background-color: #F8F8F8;
+    border-radius: 2px;
+}
+
+.col-lg-9 div{
+    background-color: #F8F8F8;
+    border-radius:2px ;
+}
+
+
 .tag>ul li a{
     font-size: 16px;
     font-family: 'Hiragino Sans GB', serif;

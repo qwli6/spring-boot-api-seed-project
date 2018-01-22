@@ -48,6 +48,44 @@
             background-color: #999999;
         }
 
+        .yes{
+            color: white;
+            background-color:dodgerblue;
+            cursor: pointer;
+            outline: none;
+            border-width: 0;
+            display:inline-block;
+            -moz-border-radius:4px;
+            -webkit-border-radius:4px;
+            font-size: 16px;
+            padding: 4px 16px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .no{
+            background-color: #bbbbbb;
+            padding: 4px 16px;
+            font-size: 16px;
+            text-align: center;
+            color: #757575;
+            outline: none;
+            border-width: 0;
+            display:inline-block;
+            -moz-border-radius:4px;
+            -webkit-border-radius:4px;
+            border-radius:4px;
+            cursor:pointer;
+        }
+
+        .yes:active{
+            background-color: #1e50ff;
+        }
+
+        .no:active{
+            background-color: #999999;
+        }
+
     </style>
 
 
@@ -95,7 +133,7 @@
         </div>
     </div>
 
-    <div class="layui-body" style="margin-left: 8px; margin-right: 8px;">
+    <div class="layui-body" style="margin-left: 8px; margin-right: 8px; padding-right: 8px;">
         <form class="layui-form" action="/admin/article/save" method="post">
             <#if article??>
                 <div class="layui-form-item">
@@ -160,11 +198,18 @@
                 </div>
             </#if>
 
-                <input id="menuId" name="menuId" value="1" type="hidden"/>
+                <input id="menuId" name="menuId" type="hidden"/>
+                <input id="showInIndex" name="showInIndex" type="hidden"/>
             <div class="layui-form-item menu">
-                <#list menuList as menu>
-                    <input type="button" value="${menu.title}">&nbsp;&nbsp;
-                </#list>
+                <span class="showIndex">
+                    <input type="button" value="是" name="1"/>&nbsp;&nbsp;
+                    <input type="button" value="否" name="2"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                <span class="menu1">
+                    <#list menuList as menu>
+                        <input type="button" value="${menu.title}" name="${menu.id}">&nbsp;&nbsp;
+                    </#list>
+                </span>
             </div>
 
             <div class="layui-form-item">
@@ -181,23 +226,49 @@
     </div>
 
 
-    <script type="text/javascript">
-//        异步请求加载分类
-       $(document).ready(function () {
-
-       });
-    </script>
-
         <script type="text/javascript">
-            var button = $(".menu").find("input");
+
+            var buttonInIndex = $(".menu .showIndex").find("input");
+
+            for(var i = 0; i < buttonInIndex.length; i++){
+                if(i == 0){
+                    var value = $(buttonInIndex[0]).attr("name");
+                    $("#showInIndex").val(value);
+                    $(buttonInIndex[i]).addClass("yes");
+                }else{
+                    $(buttonInIndex[i]).addClass("no");
+                }
+            }
+            for(var i = 0; i < buttonInIndex.length; i++){
+                (function(){
+                    var index = i;
+                    $(buttonInIndex[index]).click(function(event) {
+                        if($(buttonInIndex[index]).hasClass("no")){
+                            $(buttonInIndex[index]).removeClass("no");
+                            $(buttonInIndex[index]).addClass("yes");
+                            var val = $(buttonInIndex[index]).attr("name");
+                            $("#showInIndex").val(val);
+                            for(var j = 0; j < buttonInIndex.length; j++){
+                                if(j !== index){
+                                    $(buttonInIndex[j]).removeClass("yes");
+                                    $(buttonInIndex[j]).addClass("no");
+                                }
+                            }
+                        }
+                    });
+                })();
+            }
+
+            var button = $(".menu .menu1").find("input");
             for(var i = 0; i < button.length; i++){
                 if(i === 0){
+                    var value = $(button[0]).attr("name");
+                    $("#menuId").val(value);
                     $(button[i]).addClass("on");
                 }else{
                     $(button[i]).addClass("off");
                 }
             }
-
             for(var i = 0; i < button.length; i++){
                 (function(){
                     var index = i;
@@ -205,7 +276,8 @@
                         if($(button[index]).hasClass("off")){
                             $(button[index]).removeClass("off");
                             $(button[index]).addClass("on");
-                            $("#menuId").val(index + 1);
+                            var val = $(button[index]).attr("name");
+                            $("#menuId").val(val);
                             for(var j = 0; j < button.length; j++){
                                 if(j !== index){
                                     $(button[j]).removeClass("on");

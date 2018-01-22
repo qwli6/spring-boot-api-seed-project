@@ -74,16 +74,16 @@
             <#list articlePage.content as aritcle>
                 <tr>
                     <td>
-                        <a href="/article/show/${aritcle.urlName}" style="font-size: 17px; color: dodgerblue">
+                        <a href="/article/show/${aritcle.url}" style="font-size: 17px; color: dodgerblue">
                             ${aritcle.title}
                                 <span style="font-family: Georgia,serif;">
-                                (${(aritcle.createDate*1000)?c?number?number_to_datetime})
-                            </span>
+                                    (${(aritcle.createDate*1000)?c?number?number_to_datetime})
+                                </span>
                         </a>
                     </td>
                     <td style="font-size: 16px;"><i class="layui-icon" style="font-size: 28px;">&#xe618;</i></td>
                     <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">0</span></td>
-                    <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">0</span></td>
+                    <td style="font-size: 16px;"><span style="font-family: Georgia,serif" class="layui-badge-rim layui-bg-blue">${aritcle.clickCount}</span></td>
                     <td>
                         <a href="/admin/article/delete/${aritcle.articleId}" class="layui-btn layui-btn-danger">
                             <i class="layui-icon" style="font-size: 28px;">&#xe640;</i>

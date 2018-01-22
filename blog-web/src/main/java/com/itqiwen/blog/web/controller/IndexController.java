@@ -116,7 +116,7 @@ public class IndexController {
         Article article = articleService.findArticleByUrl(url);
         findMenuList(modelAndView);
         new Thread(() -> {
-            Integer rate = article.getRate();
+            Integer rate =  article.getClickCount();
             rate ++;
             articleService.updateRate(article.getArticleId(), rate);
         }).start();
@@ -134,7 +134,6 @@ public class IndexController {
         Menu menu = menuService.findMenuByUrl(menuName);
         findMenuList(modelAndView);
         findArchiveList(modelAndView);
-        findTagList(modelAndView);
         Page<Article> articlePage = articleService.findContentByCriteria(1, Article.PAGE_SIZE, menu);
         modelAndView.addObject("articlePage", articlePage);
         modelAndView.setViewName("user/index");
@@ -215,7 +214,7 @@ public class IndexController {
 
         Archive archive = archiveService.findArchiveByUrlName(urlName);
         Page<Article> articlePage = articleService.findArticleByCriteria(1,
-                Article.PAGE_SIZE, Short.parseShort(archive.getArchiveId().toString()));
+                Article.PAGE_SIZE, archive.getArchiveId());
         modelAndView.addObject("articlePage", articlePage);
         modelAndView.setViewName("user/index");
         return modelAndView;
@@ -233,7 +232,7 @@ public class IndexController {
             pageCode = 1;
         }
         Archive archive = archiveService.findArchiveByUrlName(urlName);
-        Page<Article> articlePage = articleService.findArticleByCriteria(pageCode, Article.PAGE_SIZE, Short.parseShort(archive.getArchiveId().toString()));
+        Page<Article> articlePage = articleService.findArticleByCriteria(pageCode, Article.PAGE_SIZE, archive.getArchiveId());
         modelAndView.addObject("articlePage", articlePage);
         modelAndView.setViewName("user/index");
         return modelAndView;
