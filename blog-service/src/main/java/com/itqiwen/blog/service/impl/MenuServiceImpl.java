@@ -1,28 +1,33 @@
 package com.itqiwen.blog.service.impl;
 
-import com.itqiwen.blog.dao.CategoryRepository;
+import com.itqiwen.blog.dao.MenuRepository;
 import com.itqiwen.blog.domain.Menu;
-import com.itqiwen.blog.service.CategoryService;
+import com.itqiwen.blog.service.IMenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author liqiwen
+ */
 @Service
 @Transactional
-public class CategoryServiceImpl implements CategoryService {
+public class MenuServiceImpl implements IMenuService {
 
     @Resource
-    private CategoryRepository categoryRepository;
+    private MenuRepository menuDao;
+
+
 
     @Override
-    public List<Menu> findAllCategory() {
-        return (List<Menu>) categoryRepository.findAll();
+    public List<Menu> findMenuList() {
+        return (List<Menu>) menuDao.findAll();
     }
 
     @Override
-    public Menu findCategoryByUrl(String url) {
-        return categoryRepository.findCategoryByUrl(url);
+    public Menu findMenuByUrl(String url) {
+        return menuDao.findMenuByUrl(url);
     }
 }

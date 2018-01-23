@@ -1,5 +1,8 @@
 package com.itqiwen.blog.exception;
 
+/**
+ * @author liqiwen
+ */
 public class TipException extends Exception{
     public TipException() {
     }

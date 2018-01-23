@@ -1,8 +1,8 @@
 package com.itqiwen.blog.service.impl;
 
 import com.itqiwen.blog.dao.LogRepository;
-import com.itqiwen.blog.domain.Log;
-import com.itqiwen.blog.service.LogService;
+import com.itqiwen.blog.domain.Logs;
+import com.itqiwen.blog.service.ILogService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,27 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @author liqiwen
+ */
 @Service
 @Transactional
-public class LogServiceImpl implements LogService {
+public class LogServiceImpl implements ILogService {
 
     @Resource
     private LogRepository logRepository;
 
+
     @Override
-    public void insertLogs(Log log) {
+    public void insertLogs(Logs log) {
         logRepository.save(log);
     }
 
-    /**
-     * 默认查看最新的20条日志
-     * @return
-     */
     @Override
-    public List<Log> findLogByPage() {
-        Pageable pageable = new PageRequest(0, 20, Sort.Direction.DESC,
+    public Page<Logs> findLogByPage(Integer pageCode, Integer pageSize) {
+        Pageable pageable = new PageRequest(pageCode - 1 , pageCode, Sort.Direction.DESC,
                 "createDt");
-        Page<Log> logPage = logRepository.findAll(pageable);
-        return logPage.getContent();
+        return logRepository.findAll(pageable);
     }
 }

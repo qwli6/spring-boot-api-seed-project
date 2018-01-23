@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
  * 全局异常处理
+ * @author liqiwen
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {

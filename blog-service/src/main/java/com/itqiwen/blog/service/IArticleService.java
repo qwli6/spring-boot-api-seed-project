@@ -1,67 +1,91 @@
 package com.itqiwen.blog.service;
 
+import com.itqiwen.blog.domain.Article;
 import com.itqiwen.blog.domain.Menu;
-import com.itqiwen.blog.domain.Content;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
-public interface ContentService {
-
-    /**
-     * 待条件分页
-     * @param pageCode
-     * @param pageSize
-     * @return
-     */
-    Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize);
-
+/**
+ * @author liqiwen
+ */
+public interface IArticleService {
 
     /**
-     * 带条件分页
-     * @param pageCode  //当前页码
-     * @param pageSize  //当前页码大小
-     * @param category  //当前分类
-     * @return
+     * 分页查找文章对象
+     * @param pageCode 当前页码
+     * @param pageSize 查询页大小
+     * @return Article Page 对象
      */
-    Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Menu category);
+    Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize);
+
+    /**
+     * 分页查找对象
+     * @param pageCode 当前页码
+     * @param pageSize 查询页大小
+     * @param menu  菜单分类
+     * @return Article Page 对象
+     */
+    Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize, Menu menu);
+
+
+    /**
+     * 分页查找对象
+     * @param pageCode 当前页码
+     * @param pageSize 查询页大小
+     * @param otherId  id
+     * @return Article Page 对象
+     */
+    Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize, Integer otherId);
 
     /**
      * 保存文章
-     * @param content
+     * @param article 要保存的文章
      */
-    void saveContent(Content content);
-
-    /**
-     * 根据文章 id 查找文章
-     * @param cid
-     * @return
-     */
-    Content findContentById(String cid);
-
-    /**
-     * 根据文章访问 url 查找文章
-     * @param url
-     * @return
-     */
-    Content findContentByVisitUrl(String url);
+    void saveArticle(Article article);
 
     /**
      * 更新文章
-     * @param content
+     * @param article 要更新的文章
      */
-    void updateContent(Content content);
-
-    List<Content> findContentsByCategory(Menu category);
-
-    void deleteContent(Content content);
+    void updateArticle(Article article);
 
     /**
-     * 更改文章点击数量
-     * @param cid
-     * @param visitCount
+     * 根据文章 id（主键） 查找文章实体
+     * @param articleId  文章id
+     * @return 文章实体
      */
-    void updateVisitCount(Integer cid, int visitCount);
+    Article findArticleById(Integer articleId);
 
-    List<Content> findContentByCriteria(Menu category);
+    /**
+     * 根据文章访问 url 查找文章
+     * @param url 访问 url
+     * @return 返回文章实体类
+     */
+    Article findArticleByUrl(String url);
+
+    /**
+     * 删除文章
+     * @param article 要删除的文章实体
+     */
+    void deleteArticle(Article article);
+
+
+    /**
+     * 根据文章主键删除文章
+     * @param articleId   文章主键
+     */
+    void deleteByArticleId(Integer articleId);
+
+    /**
+     * 根据文章主键更改文章点击量
+     * @param articleId 文章 id
+     * @param rate 要更改的点击量
+     */
+    void updateRate(Integer articleId, Integer rate);
+
+    /**
+     * 更改文章的归档
+     * @param archiveId  文章归档 id
+     * @param articleId  文章 id
+     */
+    void updateArchiveId(Integer archiveId, Integer articleId);
 }

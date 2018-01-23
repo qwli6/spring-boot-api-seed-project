@@ -1,108 +1,97 @@
 package com.itqiwen.blog.service.impl;
 
-import com.itqiwen.blog.dao.ContentRepository;
+import com.itqiwen.blog.dao.ArticleRepository;
+import com.itqiwen.blog.domain.Article;
 import com.itqiwen.blog.domain.Menu;
-import com.itqiwen.blog.domain.Content;
-import com.itqiwen.blog.service.ContentService;
+import com.itqiwen.blog.service.IArticleService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
+
+/**
+ * @author liqiwen
+ */
 @Transactional
 @Service
-public class ContentServiceImpl implements ContentService {
+public class ArticleServiceImpl implements IArticleService {
 
     @Resource
-    private ContentRepository contentRepository;
+    private ArticleRepository articleDao;
 
 
-    /**
-     * 查询全部分类下的文章
-     * 带分页
-     * @param pageCode
-     * @param pageSize
-     * @return
-     */
     @Override
-    public Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize) {
+    public Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize) {
         //hibernate 页码是从 0开始，这里需要 -1
-        Pageable pageable =new PageRequest(pageCode-1, pageSize, Sort.Direction.DESC, "createDt");
-        Content content = new Content();
-//        content.setState(ContentState.PUBLISH.getState());
-//        content.setType(ContentType.PUBLIC.getType());
-        Example<Content> contentExample = Example.of(content);
-        return contentRepository.findAll(contentExample, pageable);
-    }
-
-    /**
-     * 根据分类查询条件
-     * 带分页
-     * @param pageCode  //当前页码
-     * @param pageSize  //当前页码大小
-     * @param category  //当前分类
-     * @return
-     */
-    @Override
-    public Page<Content> findContentByCriteria(Integer pageCode, Integer pageSize, Menu category) {
-        Pageable pageable = new PageRequest(pageCode - 1, pageSize, Sort.Direction.DESC, "createDt");
-        Content content = new Content();
-//        content.setState(ContentState.PUBLISH.getState());
-//        content.setType(ContentType.PUBLIC.getType());
-        Example<Content>  contentExample = Example.of(content);
-        return contentRepository.findAll(contentExample, pageable);
+        Pageable pageable =new PageRequest(pageCode-1, pageSize,
+                Sort.Direction.DESC, "createDate");
+        Article article = new Article();
+        article.setState(Article.STATE_PUBLISH);
+        Example<Article> articleExample = Example.of(article);
+        return articleDao.findAll(articleExample, pageable);
     }
 
 
     @Override
-    public List<Content> findContentByCriteria(Menu category) {
-        Content content = new Content();
-//        content.setState(ContentState.PUBLISH.getState());
-//        content.setType(ContentType.PUBLIC.getType());
-//        content.setCategory(category);
-        Example<Content> contentExample = Example.of(content);
-        Sort sort = new Sort(Sort.Direction.DESC, "createDt");
-        return contentRepository.findAll(contentExample, sort);
+    public Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize, Menu menu) {
+        Pageable pageable = new PageRequest(pageCode - 1, pageSize, Sort.Direction.DESC, "createDate");
+        Article content = new Article();
+        content.setMenuId(menu.getId());
+        Example<Article>  contentExample = Example.of(content);
+        return articleDao.findAll(contentExample, pageable);
+    }
+
+
+    @Override
+    public Page<Article> findArticleByCriteria(Integer pageCode, Integer pageSize, Integer otherId) {
+        Pageable pageable = new PageRequest(pageCode - 1, pageSize, Sort.Direction.DESC, "createDate");
+        Article article = new Article();
+        Example<Article> example = Example.of(article);
+        return articleDao.findAll(example, pageable);
+    }
+
+
+    @Override
+    public void saveArticle(Article article) {
+        articleDao.save(article);
     }
 
     @Override
-    public void saveContent(Content content) {
-        contentRepository.save(content);
+    public Article findArticleById(Integer articleId) {
+        return articleDao.findOne(articleId);
     }
 
     @Override
-    public Content findContentById(String cid) {
-        return contentRepository.findOne(Integer.parseInt(cid));
+    public Article findArticleByUrl(String url) {
+        return articleDao.findArticleByUrl(url);
     }
 
     @Override
-    public Content findContentByVisitUrl(String url) {
-//        return contentRepository.findContentByVisitUrl(url);
-        return null;
+    public void updateArticle(Article article) {
+        articleDao.saveAndFlush(article);
+    }
+
+
+    @Override
+    public void deleteArticle(Article article) {
+        articleDao.delete(article);
     }
 
     @Override
-    public void updateContent(Content content) {
-        contentRepository.saveAndFlush(content);
+    public void deleteByArticleId(Integer articleId) {
+        articleDao.delete(articleId);
     }
 
     @Override
-    public List<Content> findContentsByCategory(Menu category) {
-//        return contentRepository.findContentsByCategory(category);
-        return null;
+    public void updateRate(Integer articleId, Integer rate) {
+        articleDao.updateRate(articleId, rate);
     }
 
     @Override
-    public void deleteContent(Content content) {
-        contentRepository.delete(content);
+    public void updateArchiveId(Integer archiveId, Integer articleId) {
+        articleDao.updateArchiveId(archiveId,articleId);
     }
-
-    @Override
-    public void updateVisitCount(Integer cid, int visitCount) {
-        contentRepository.updateVisitCount(cid, visitCount);
-    }
-
 
 }
