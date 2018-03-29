@@ -232,6 +232,7 @@ public class CodeGenerator {
      * @param isRest true 表示只提供 api，不提供界面
      *               false 不提供 api，提供界面
      * 只有为 true 的时候才会生成页面模板
+     * 为 true 的时候只生成接口
      */
     private static void generatorCode(boolean isRest){
         List<String> tableNames = getTableName();
