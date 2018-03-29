@@ -1,6 +1,5 @@
 package com.company.project;
 
-import com.google.common.base.CaseFormat;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.DatabaseMetaData;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -12,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by liqiwen on 2017/6/30.
@@ -42,35 +41,21 @@ public class CodeGenerator {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "student";
 
-    //工程相对路径
-    private static final String PROJECT_PATH = System.getProperty("user.dir");
-    //模板路径
-    private static final String TEMPLATE_FILE_PATH = PROJECT_PATH + "/src/test/resources/template";
-    //java 文件路径
-    private static final String JAVA_PATH = "/src/main/java";
-    //资源文件路径
-    private static final String RESOURCES_PATH = "/src/main/resources";
-
-    private static final String PACKAGE_PATH_SERVICE = null;
-    private static final String PACKAGE_PATH_SERVICE_IMPL = "";
-    private static final String PACKAGE_PATH_CONTROLLER = "";
-
-
     private static final String TABLE = "TABLE";
     private static final Integer TABLE_NAME_INDEX = 3;
     private static final String EXECUTABLE_SQL = "SELECT * FROM ";
     private static final String CONTEXT_BEGINNING_DELIMITER = "`";
     private static final String CONTEXT_ENDING_DELIMITER = "`";
 
-    private static final String AUTHOR = "author";
-    private static final String AUTHOR_NAME = "CodeGenerator";
-    private static final String CREATE_DATE ="date";
-    private static final String MODEL_PACKAGE = "packageName";
-    private static final String CLASS_NAME = "className";
-    private static final String COMPANY = "com.xxx.yyy";
+    private static final String AUTHOR_KEY = "author";
+    private static final String AUTHOR_VALUE = "CodeGenerator";
+    public static final String BASE_PACKAGE_KEY = "packageName";
+    private static final String BASE_TARGET_PACKAGE = "com.company.project";
+    public static final String CLASS_NAME = "className";
     private static final String EMAIL_KEY = "email";
-    private static final String EMAIL_VALUE = "小李@gmail.com";
-    private static final String MODEL_TARGET_PACKAGE = "com.company.project.entity";
+    private static final String COMPANY_KEY = "company";
+    private static final String EMAIL_VALUE = "selfassu@gmail.com";
+    private static final String COMPANY_VALUE = "com.xxx.yyy";
 
 
     static {
@@ -79,60 +64,6 @@ public class CodeGenerator {
         } catch (ClassNotFoundException e) {
             logger.error("不能加载数据库驱动！异常信息：" + e.getMessage());
         }
-    }
-
-    /**
-     * 包名转换成路径
-     * @param packageName 包名
-     * @return 路径
-     */
-    private static String packageNameToPath(String packageName){
-
-        if(packageName.contains(".")){
-            return packageName.replace(".", "/");
-        }else{
-            return packageName;
-        }
-    }
-
-
-    /**
-     * 表名称转换成小驼峰 比如 t_user --> tUser
-     * @param tableName 表名
-     * @return 小驼峰
-     */
-    private static String tableNameToLowerCamel(String tableName) {
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, tableName.toLowerCase());
-    }
-
-    /**
-     * 表名转换成大驼峰 比如 t_user --> TUser
-     * @param tableName 表名
-     * @return 大驼峰
-     */
-    private static String tableNameToUpperCamel(String tableName) {
-        return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, tableName.toLowerCase());
-
-    }
-    /**
-     * 表名转换成文件路径 比如 t_user --> /t/user
-     * @param tableName 表名
-     * @return 路径
-     */
-    private static String tableNameToPath(String tableName) {
-        tableName = tableName.toLowerCase();//兼容使用大写的表名
-        return "/" + (tableName.contains("_") ? tableName.replaceAll("_", "/") : tableName);
-    }
-
-
-    /**
-     * 模型名称转换成路径 例如 User --> /user
-     * @param modelName 实体类名称
-     * @return 路径
-     */
-    private static String modelNameToPath(String modelName) {
-        String tableName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, modelName);
-        return tableNameToPath(tableName);
     }
 
     /**
@@ -198,45 +129,9 @@ public class CodeGenerator {
 
 
     /**
-     * 获取数据库列名称
-     */
-    private static List<String> getColumnName(String tableName){
-        List<String> columnNames = new ArrayList<>();
-        PreparedStatement statement = null;
-        Connection connection = getConnection();
-        String sql = EXECUTABLE_SQL + tableName;
-        try {
-             statement = connection.prepareStatement(sql);
-            ResultSetMetaData resultSetMetaData = statement.getMetaData();
-
-            int columnCount = resultSetMetaData.getColumnCount();
-            for (int i = 0; i < columnCount; i++) {
-                String columnName = resultSetMetaData.getColumnName(i + 1);
-                columnNames.add(tableNameToLowerCamel(columnName));
-            }
-        } catch (SQLException e) {
-            logger.error("执行 SQL 失败！异常信息：" + e.getMessage());
-        }finally {
-            if(statement != null){
-                try {
-                    statement.close();
-                    closeConnection(connection);
-                } catch (SQLException e) {
-                    logger.error("关闭失败！异常信息：" + e.getMessage());
-                }
-            }
-        }
-        logger.info("表 " + tableName + " 的字段分别为：" + columnNames);
-        return columnNames;
-    }
-
-
-    /**
      * 获取数据库列名称对应的名称和属性
      */
-    private static Map<String, Object> getColumnType(String tableName){
-//        List<String> columnTypes = new ArrayList<>();
-
+    private static Map<String, Object> getColumnNameAndType(String tableName){
         Map<String, Object> nameAndTypeMap = new HashMap<>();
         Connection connection = getConnection();
         PreparedStatement statement = null;
@@ -247,50 +142,41 @@ public class CodeGenerator {
         try {
             statement = connection.prepareStatement(sql);
             ResultSetMetaData metaData = statement.getMetaData();
-
             //表列数
             int columnCount = metaData.getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 String columnType = metaData.getColumnTypeName(i + 1);
-                String columnName = tableNameToLowerCamel(metaData.getColumnName(i + 1));
-                //INT VARCHAR VARCHAR INT
-                //另外的 BIT 属性不支持
+//                String columnName = tableNameToLowerCamel(metaData.getColumnName(i + 1));
+                String columnName = metaData.getColumnName(i + 1);
                 switch (columnType){
                     case "VARCHAR":
                         tempValue = "String";
-//                        columnTypes.add("String");
                         break;
                     case "INT":
                     case "INTEGER":
                     case "SMALLINT":
                         tempValue = "Integer";
-//                        columnTypes.add("Integer");
                         break;
                     case "FLOAT":
                         tempValue = "Float";
-//                        columnTypes.add("Float");
                         break;
                     case "DOUBLE":
                         tempValue = "Double";
-//                        columnTypes.add("Double");
                         break;
                     case "DATE":
                     case "DATETIME":
                     case "TIMESTAMP":
                     case "TIME":
                         tempValue = "Date";
-//                        columnTypes.add("Date");
                         break;
                     case "TINYINT":
                     case "BOOL":
                     case "BOOLEAN":
                         tempValue = "Short";
-//                        columnTypes.add("Short");
                         break;
                     case "BIGINT":
                     case "MEDIUMINT":
                         tempValue = "Long";
-//                        columnTypes.add("Long");
                         break;
                 }
                 nameAndTypeMap.put(columnName, tempValue);
@@ -307,30 +193,9 @@ public class CodeGenerator {
                 }
             }
         }
-
-        logger.info("表 " + tableName +" 中对应的字段名称和类型为：" + nameAndTypeMap);
         return nameAndTypeMap;
     }
 
-
-
-
-
-
-    private static void genModelAndMapper(String dbName, String modelName){
-        Context context = new Context(ModelType.FLAT);
-        context.setId("Potato");
-        context.setTargetRuntime("MyBatis3Simple");
-        context.addProperty(PropertyRegistry.CONTEXT_BEGINNING_DELIMITER,"`");
-        context.addProperty(PropertyRegistry.CONTEXT_ENDING_DELIMITER, "`");
-
-        JDBCConnectionConfiguration jdbcConnectionConfiguration = new JDBCConnectionConfiguration();
-        jdbcConnectionConfiguration.setConnectionURL(DB_URL);
-        jdbcConnectionConfiguration.setDriverClass(DB_DRIVER);
-        jdbcConnectionConfiguration.setPassword(DB_PASSWORD);
-        jdbcConnectionConfiguration.setUserId(DB_USERNAME);
-        context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
-    }
 
     private void generator() throws Exception{
         List<String> warnings = new ArrayList<String>();
@@ -344,32 +209,47 @@ public class CodeGenerator {
         myBatisGenerator.generate(null);
     }
 
-    public static void main(String[] args) throws Exception {
-//        FreemarkerUtil.init();
-        Map<String, Object> root;
-        List<String> tableName = getTableName();
-        for (int i = 0; i < tableName.size(); i++) {
-            root = new HashMap<>();
-            String fileName = tableName.get(i);
-            Map<String, Object> nameAndMap = getColumnType(fileName);
-            root.put(MODEL_PACKAGE,MODEL_TARGET_PACKAGE);
-            root.put(CLASS_NAME, tableNameToUpperCamel(tableName.get(i)));
-            root.put(AUTHOR,AUTHOR_NAME);
-            root.put(CREATE_DATE, new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
-            root.put("company", COMPANY);
-            root.put(EMAIL_KEY, EMAIL_VALUE);
-            root.put("varMap", nameAndMap);
-            FreemarkerUtil.getModel(root, tableNameToUpperCamel(tableName.get(i)));
-        }
-//        getColumnName("user");
-//        getColumnType("user");
-//        try {
-//            CodeGenerator generateCode = new CodeGenerator();
-//            generateCode.generator();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+
+    private static Map<String, Object> initData(String tableName){
+        Map<String, Object> root = new HashMap<>();
+        root.put(CLASS_NAME,PathUtils.tableNameToUpperCamel(tableName));
+        root.put(AUTHOR_KEY, AUTHOR_VALUE);
+        root.put(EMAIL_KEY, EMAIL_VALUE);
+        root.put(COMPANY_KEY, COMPANY_VALUE);
+        root.put(BASE_PACKAGE_KEY, BASE_TARGET_PACKAGE);
+
+        Map<String, Object> colAndProMap = getColumnNameAndType(tableName);
+        root.put("varMap", colAndProMap);
+
+        return root;
 
     }
 
+
+    /**
+     * 是否生成 restful 风格的 controller
+     * @param isRest true 表示只提供 api，不提供界面
+     *               false 不提供 api，提供界面
+     * 只有为 true 的时候才会生成页面模板
+     */
+    private static void generatorCode(boolean isRest){
+        List<String> tableNames = getTableName();
+        for (int i = 0; i < tableNames.size(); i++) {
+            Map<String, Object> root = initData(tableNames.get(i));
+            try {
+                FreemarkerUtils.genModelAndMapper(root);
+                FreemarkerUtils.genServiceAndImpl(root);
+                FreemarkerUtils.genController(root, false);
+                FreemarkerUtils.genMapperXml(root);
+                FreemarkerUtils.genPageBean(root);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        generatorCode(false);
+    }
 }

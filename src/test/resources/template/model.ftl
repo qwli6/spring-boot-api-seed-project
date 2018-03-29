@@ -1,13 +1,15 @@
-package ${packageName};
+package ${packageName}.model;
+
+import java.io.Serializable;
 
 
 /**
 *  Author: ${author}
 *  Email: ${email}
-*  Date: ${date}
+*  Date: ${.now?string("yyyy-MM-dd")}
 *  Company: ${company}
 */
-public class ${className} {
+public class ${className} implements Serializable {
 
 <#list varMap?keys as key>
     private ${varMap["${key}"]} ${key};
