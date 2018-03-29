@@ -3,15 +3,20 @@
 <!-- com.company.project.mapper.UserMapper-->
 <mapper namespace="${packageName}.mapper.${className}Mapper">
 
+    <resultMap id="BaseResultMap" type="${className}">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+    </resultMap>
+
     <!-- 基本字段-->
     <sql id="Base_Column_List">
-        <#--<#list fieldList as key>-->
-            <#--<#if key_index == fieldList?size - 1>-->
-                <#--${key}-->
-                <#--<#else>-->
-                <#--${key},-->
-            <#--</#if>-->
-        <#--</#list>-->
+        <#list columnList as key>
+            <trim suffixOverrides=",">
+                ${key},
+            </trim>
+        </#list>
     </sql>
 
     <!-- 字段值-->
@@ -26,24 +31,24 @@
     </sql>
 
 
-    <!-- 保存对象: 判断传进来的参数是否有 id，如果没有 id，则不显示 id 字段-->
     <insert id="save${className}" parameterType="${className?lower_case}">
-        insert into `${className?lower_case}`(
-        <#--<#list fieldList as key>-->
-            <#--<#if key_index == fieldList?size - 1>-->
-                <#--${key}-->
-                <#--<#else>-->
-                <#--${key},-->
-            <#--</#if>-->
-        <#--</#list>-->
-        ) values (
-        <#--<#list propertyList as key>-->
-            <#--<#if key_index == propertyList?size - 1>-->
-                <#--${r"#{"}${key}${r"}"}-->
-                <#--<#else>-->
-                <#--${r"#{"}${key}${r"}"},-->
-            <#--</#if>-->
-        <#--</#list>)-->
+        insert into `${className?lower_case}`
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <!-- 列对象 -->
+            <#list columnList as key>
+                <if test="${key} != null">
+                    ${key},
+                </if>
+            </#list>
+        </trim>
+        <trim prefix="values (" suffixOverrides="," suffix=")">
+            <!-- 成员属性-->
+            <#list fieldList as key>
+                <if test="${key} != null">
+                    ${key},
+                </if>
+            </#list>
+        </trim>
     </insert>
 
 
