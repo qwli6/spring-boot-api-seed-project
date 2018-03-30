@@ -1,7 +1,9 @@
 package com.company.project;
 
+import com.company.project.core.ProjectConstants;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.DatabaseMetaData;
+import org.apache.ibatis.annotations.Case;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -15,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by liqiwen on 2017/6/30.
@@ -41,20 +41,19 @@ public class CodeGenerator {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "student";
 
-    private static final String TABLE = "TABLE";
-    private static final Integer TABLE_NAME_INDEX = 3;
-    private static final String EXECUTABLE_SQL = "SELECT * FROM ";
-    private static final String CONTEXT_BEGINNING_DELIMITER = "`";
-    private static final String CONTEXT_ENDING_DELIMITER = "`";
-
-    private static final String AUTHOR_KEY = "author";
+    //设置成你自己的信息
+    //作者名称
     private static final String AUTHOR_VALUE = "CodeGenerator";
-    public static final String BASE_PACKAGE_KEY = "packageName";
+    //生成的类所在的基础包名
+    //mapper 生成包名 com.company.project.mapper
+    //model 生成包名 com.company.project.model
+    //service 生成包名 com.company.project.service
+    //serviceImpl 生成包名 com.company.project.service.impl
+    //controller 生成包名 com.company.project.web.controller
     private static final String BASE_TARGET_PACKAGE = "com.company.project";
-    public static final String CLASS_NAME = "className";
-    private static final String EMAIL_KEY = "email";
-    private static final String COMPANY_KEY = "company";
+    //作者邮箱
     private static final String EMAIL_VALUE = "selfassu@gmail.com";
+    //作者公司
     private static final String COMPANY_VALUE = "com.xxx.yyy";
 
 
@@ -107,9 +106,9 @@ public class CodeGenerator {
         try {
             DatabaseMetaData db = (DatabaseMetaData) connection.getMetaData();
             resultSet = db.getTables(null, null,
-                    null, new String[]{TABLE});
+                    null, new String[]{ProjectConstants.TABLE});
             while (resultSet.next()){
-                tableName.add(resultSet.getString(TABLE_NAME_INDEX));
+                tableName.add(resultSet.getString(ProjectConstants.TABLE_NAME_INDEX));
             }
         } catch (SQLException e) {
             logger.error("获取数据库表名称失败！异常信息：" + e.getMessage());
@@ -129,57 +128,88 @@ public class CodeGenerator {
 
 
     /**
+     * mysql 列类型转 java 类型
+     * @param columnType 列类型
+     * @return java 类型
+     * jdk1.8 以上 switch 才支持字符串，如果 jdk 版本小于 1.8，请自行更改成 if else 的方式
+     */
+    public static String mysqlColumnType2JavaType(String columnType){
+        String javaType;
+        switch (columnType){
+            case ProjectConstants.MYSQL_TYPE_VARCHAR:
+            case ProjectConstants.MYSQL_TYPE_CHAR:
+                javaType = ProjectConstants.JAVA_TYPE_STRING;
+                break;
+            case ProjectConstants.MYSQL_TYPE_INTEGER:
+            case ProjectConstants.MYSQL_TYPE_INT:
+            case ProjectConstants.MYSQL_TYPE_SMALLINT:
+                javaType = ProjectConstants.JAVA_TYPE_INTEGER;
+                break;
+            case ProjectConstants.MYSQL_TYPE_FLOAT:
+                javaType = ProjectConstants.JAVA_TYPE_FLOAT;
+                break;
+            case ProjectConstants.MYSQL_TYPE_DOUBLE:
+                javaType = ProjectConstants.JAVA_TYPE_DOUBLE;
+                break;
+            case ProjectConstants.MYSQL_TYPE_DATE:
+            case ProjectConstants.MYSQL_TYPE_TIME:
+            case ProjectConstants.MYSQL_TYPE_TIMESTAMP:
+            case ProjectConstants.MYSQL_TYPE_DATETIME:
+                javaType = ProjectConstants.JAVA_TYPE_DATE;
+                break;
+            case ProjectConstants.MYSQL_TYPE_TINYINT:
+            case ProjectConstants.MYSQL_TYPE_BOOL:
+            case ProjectConstants.MYSQL_TYPE_BOOLEAN:
+                javaType = ProjectConstants.JAVA_TYPE_SHORT;
+                break;
+            case ProjectConstants.MYSQL_TYPE_BIGINT:
+            case ProjectConstants.MYSQL_TYPE_MEDIUMINT:
+                javaType = ProjectConstants.JAVA_TYPE_LONG;
+                break;
+                default:
+                    javaType = ProjectConstants.JAVA_TYPE_STRING;
+                    break;
+
+        }
+        return javaType;
+    }
+
+    /**
+     * oracle 列类型转换成 java 类型
+     * @param columnType 列类型
+     * @return java 类型
+     *
+     */
+    public String oracleColumnType2JavaType(String columnType){
+
+        return null;
+    }
+
+
+    /**
      * 获取数据库列名称对应的名称和属性
      */
     private static Map<String, Object> getColumnNameAndType(String tableName){
         Map<String, Object> nameAndTypeMap = new HashMap<>();
         Connection connection = getConnection();
         PreparedStatement statement = null;
-        String sql = EXECUTABLE_SQL + CONTEXT_BEGINNING_DELIMITER + tableName + CONTEXT_ENDING_DELIMITER;
-
+        //给执行的 sql 中表名加上 `表名`
+        //不加有些表会报错，比如 order 表
+        // select * from order;  这样写执行可能会报错
+        String sql = ProjectConstants.EXECUTABLE_SQL +
+                ProjectConstants.CONTEXT_BEGINNING_DELIMITER +
+                tableName +
+                ProjectConstants.CONTEXT_ENDING_DELIMITER;
         String tempValue = null;
-
         try {
             statement = connection.prepareStatement(sql);
             ResultSetMetaData metaData = statement.getMetaData();
-            //表列数
             int columnCount = metaData.getColumnCount();
             for (int i = 0; i < columnCount; i++) {
                 String columnType = metaData.getColumnTypeName(i + 1);
 //                String columnName = tableNameToLowerCamel(metaData.getColumnName(i + 1));
                 String columnName = metaData.getColumnName(i + 1);
-                switch (columnType){
-                    case "VARCHAR":
-                        tempValue = "String";
-                        break;
-                    case "INT":
-                    case "INTEGER":
-                    case "SMALLINT":
-                        tempValue = "Integer";
-                        break;
-                    case "FLOAT":
-                        tempValue = "Float";
-                        break;
-                    case "DOUBLE":
-                        tempValue = "Double";
-                        break;
-                    case "DATE":
-                    case "DATETIME":
-                    case "TIMESTAMP":
-                    case "TIME":
-                        tempValue = "Date";
-                        break;
-                    case "TINYINT":
-                    case "BOOL":
-                    case "BOOLEAN":
-                        tempValue = "Short";
-                        break;
-                    case "BIGINT":
-                    case "MEDIUMINT":
-                        tempValue = "Long";
-                        break;
-                }
-                nameAndTypeMap.put(columnName, tempValue);
+                nameAndTypeMap.put(columnName, mysqlColumnType2JavaType(columnType));
             }
         } catch (SQLException e) {
             logger.error("执行 SQL 失败！异常信息：" + e.getMessage());
@@ -213,11 +243,11 @@ public class CodeGenerator {
 
     private static Map<String, Object> initData(String tableName){
         Map<String, Object> root = new HashMap<>();
-        root.put(CLASS_NAME,PathUtils.tableNameToUpperCamel(tableName));
-        root.put(AUTHOR_KEY, AUTHOR_VALUE);
-        root.put(EMAIL_KEY, EMAIL_VALUE);
-        root.put(COMPANY_KEY, COMPANY_VALUE);
-        root.put(BASE_PACKAGE_KEY, BASE_TARGET_PACKAGE);
+        root.put(ProjectConstants.CLASS_NAME,PathUtils.tableNameToUpperCamel(tableName));
+        root.put(ProjectConstants.AUTHOR_KEY, AUTHOR_VALUE);
+        root.put(ProjectConstants.EMAIL_KEY, EMAIL_VALUE);
+        root.put(ProjectConstants.COMPANY_KEY, COMPANY_VALUE);
+        root.put(ProjectConstants.BASE_PACKAGE_KEY, BASE_TARGET_PACKAGE);
 
         Map<String, Object> colAndProMap = getColumnNameAndType(tableName);
         root.put("varMap", colAndProMap);

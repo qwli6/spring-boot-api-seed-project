@@ -11,14 +11,4 @@ public abstract class BaseController {
 
 
 
-    /**
-     * 分页信息
-     * @return
-     */
-    protected PageBean getPageBean(){
-        return new PageBean();
-    }
-
-
-
 }

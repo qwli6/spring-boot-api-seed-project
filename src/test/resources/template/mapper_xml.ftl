@@ -3,13 +3,6 @@
 <!-- com.company.project.mapper.UserMapper-->
 <mapper namespace="${packageName}.mapper.${className}Mapper">
 
-    <resultMap id="BaseResultMap" type="${className}">
-        <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="username" jdbcType="VARCHAR" property="username" />
-        <result column="password" jdbcType="VARCHAR" property="password" />
-        <result column="blog_id" jdbcType="INTEGER" property="blogId" />
-    </resultMap>
-
     <!-- 基本字段-->
     <sql id="Base_Column_List">
         <#list columnList as key>
@@ -52,74 +45,76 @@
     </insert>
 
 
-    <!-- 删除对象-->
-    <delete id="delete${className}ById" parameterType="int">
-        delete from `${className?lower_case}`
-        <where>
-            <#--<#list propertyList as key>-->
-                <#--<if test="${key[0]} != null and ${key[0]} != ''">-->
-                    <#--and ${key} = ${r"#{"}${key}${r"}"}-->
-                <#--</if>-->
-            <#--</#list>-->
-        </where>
-    </delete>
+    <#--<select id="find${className}sBy"-->
+
+    <#--<!-- 删除对象&ndash;&gt;-->
+    <#--<delete id="delete${className}ById" parameterType="int">-->
+        <#--delete from `${className?lower_case}`-->
+        <#--<where>-->
+            <#--&lt;#&ndash;<#list propertyList as key>&ndash;&gt;-->
+                <#--&lt;#&ndash;<if test="${key[0]} != null and ${key[0]} != ''">&ndash;&gt;-->
+                    <#--&lt;#&ndash;and ${key} = ${r"#{"}${key}${r"}"}&ndash;&gt;-->
+                <#--&lt;#&ndash;</if>&ndash;&gt;-->
+            <#--&lt;#&ndash;</#list>&ndash;&gt;-->
+        <#--</where>-->
+    <#--</delete>-->
 
 
-    <!-- 修改 -->
-    <update id="edit${className}ById" parameterType="${className}">
-        update `${className?lower_case}`
-        set
+    <#--<!-- 修改 &ndash;&gt;-->
+    <#--<update id="edit${className}ById" parameterType="${className}">-->
+        <#--update `${className?lower_case}`-->
+        <#--set-->
 
-    </update>
+    <#--</update>-->
 
 
-    <!--通过 id 查找对象 -->
-    <select id="find${className}ById" parameterType="" resultType="">
-        select
-        <include refid="field"/>
-        from
-        `${className?lower_case}`
-        <where>
-            and xx = ''
-        </where>
-    </select>
+    <#--<!--通过 id 查找对象 &ndash;&gt;-->
+    <#--<select id="find${className}ById" parameterType="" resultType="">-->
+        <#--select-->
+        <#--<include refid="field"/>-->
+        <#--from-->
+        <#--`${className?lower_case}`-->
+        <#--<where>-->
+            <#--and xx = ''-->
+        <#--</where>-->
+    <#--</select>-->
 
-    <!-- 通过一个条件或者多个条件查询数据-->
-    <select id="find${className}ByConditions" parameterType="" resultType="">
-        select
-        <include refid="field"/>
-        from
-        `${className?lower_case}`
-        <where>
-            <!-- 遍历字段集合-->
-        </where>
-    </select>
+    <#--<!-- 通过一个条件或者多个条件查询数据&ndash;&gt;-->
+    <#--<select id="find${className}ByConditions" parameterType="" resultType="">-->
+        <#--select-->
+        <#--<include refid="field"/>-->
+        <#--from-->
+        <#--`${className?lower_case}`-->
+        <#--<where>-->
+            <#--<!-- 遍历字段集合&ndash;&gt;-->
+        <#--</where>-->
+    <#--</select>-->
 
-    <!-- 无条件查找数量-->
-    <select id="countNoConditions" resultType="int">
-        select count(1) from `${className?lower_case}`
-    </select>
+    <#--<!-- 无条件查找数量&ndash;&gt;-->
+    <#--<select id="countNoConditions" resultType="int">-->
+        <#--select count(1) from `${className?lower_case}`-->
+    <#--</select>-->
 
-    <!-- 有条件查找数量-->
-    <select id="countByConditions" resultType="int">
-        select count(1) from `${className?lower_case}`
-        <where>
+    <#--<!-- 有条件查找数量&ndash;&gt;-->
+    <#--<select id="countByConditions" resultType="int">-->
+        <#--select count(1) from `${className?lower_case}`-->
+        <#--<where>-->
 
-        </where>
-    </select>
+        <#--</where>-->
+    <#--</select>-->
 
-    <!-- 列表-->
-    <select id="find${className}ByPage" parameterType="page" resultType="">
-        select
-        <include refid="field"/>
-        from
-        `${className?lower_case}`
-        <where>
-            <if test="xx != null and xx != ''">
-                and xx like contact('%', xxx, '%')
-            </if>
-        </where>
-    </select>
+    <#--<!-- 列表&ndash;&gt;-->
+    <#--<select id="find${className}ByPage" parameterType="page" resultType="">-->
+        <#--select-->
+        <#--<include refid="field"/>-->
+        <#--from-->
+        <#--`${className?lower_case}`-->
+        <#--<where>-->
+            <#--<if test="xx != null and xx != ''">-->
+                <#--and xx like contact('%', xxx, '%')-->
+            <#--</if>-->
+        <#--</where>-->
+    <#--</select>-->
 
 
     <!-- 列表（全部）-->
