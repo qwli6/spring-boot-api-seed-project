@@ -57,6 +57,9 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 //禁止循环引用
                 SerializerFeature.DisableCircularReferenceDetect);
 
+        // fastjson 版本过高的时候会报错
+        // json java.lang.IllegalArgumentException: 'Content-Type' cannot contain wildcard type '*'
+        // 需要自己指定 Content-Type , 老版本中默认指定的是 MediaType.ALL
         List<MediaType> mediaTypes = new ArrayList<>();
         mediaTypes.add(MediaType.APPLICATION_JSON);
         mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
@@ -109,6 +112,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                     logger.info(exception.getMessage());
                 }else if(exception instanceof ServletException){
                     result.setCode(ResultCode.FAILED).setMessage(exception.getMessage());
+                    logger.info(exception.getMessage());
                 }else {
                     result.setCode(ResultCode.SERVER_ERROR)
                             .setMessage("服务器出错！接口 {" + request.getRequestURI() + "} 无法执行，请联系管理员！");
