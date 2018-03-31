@@ -12,6 +12,7 @@ import com.company.project.core.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
@@ -24,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,6 +57,25 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
                 //禁止循环引用
                 SerializerFeature.DisableCircularReferenceDetect);
 
+        List<MediaType> mediaTypes = new ArrayList<>();
+        mediaTypes.add(MediaType.APPLICATION_JSON);
+        mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+        mediaTypes.add(MediaType.APPLICATION_ATOM_XML);
+        mediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
+        mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
+        mediaTypes.add(MediaType.APPLICATION_PDF);
+        mediaTypes.add(MediaType.APPLICATION_RSS_XML);
+        mediaTypes.add(MediaType.APPLICATION_XHTML_XML);
+        mediaTypes.add(MediaType.APPLICATION_XML);
+        mediaTypes.add(MediaType.IMAGE_GIF);
+        mediaTypes.add(MediaType.IMAGE_JPEG);
+        mediaTypes.add(MediaType.IMAGE_PNG);
+        mediaTypes.add(MediaType.TEXT_EVENT_STREAM);
+        mediaTypes.add(MediaType.TEXT_HTML);
+        mediaTypes.add(MediaType.TEXT_MARKDOWN);
+        mediaTypes.add(MediaType.TEXT_PLAIN);
+        mediaTypes.add(MediaType.TEXT_XML);
+        converter.setSupportedMediaTypes(mediaTypes);
         converter.setFastJsonConfig(config);
         converter.setDefaultCharset(Charset.forName("UTF-8"));
         converters.add(converter);
