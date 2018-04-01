@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.lang.Nullable;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +23,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,30 +97,31 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
     @Override
     protected void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
         exceptionResolvers.add(new HandlerExceptionResolver() {
-            @Nullable
             @Override
             public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
-                                                 @Nullable Object handler, Exception exception) {
+                                                 Object handler, Exception exception) {
                 Result result = new Result();
+                String requestURI = request.getRequestURI();
+                logger.info("requestURI:" + requestURI);
                 if(exception instanceof ApplicationException){
                     //业务失败的异常，手动抛出的异常
                     result.setCode(ResultCode.FAILED).setMessage(exception.getMessage());
                     logger.info(exception.getMessage());
                 }else if(exception instanceof NoHandlerFoundException){
                     //请求路径没有找到
-                    result.setCode(ResultCode.NOT_FOUND).setMessage("接口 {" + request.getRequestURI() + "} 不存在，请检查");
+                    result.setCode(ResultCode.NOT_FOUND).setMessage("接口 {" + requestURI + "} 不存在，请检查");
                     logger.info(exception.getMessage());
                 }else if(exception instanceof ServletException){
                     result.setCode(ResultCode.FAILED).setMessage(exception.getMessage());
                     logger.info(exception.getMessage());
                 }else {
                     result.setCode(ResultCode.SERVER_ERROR)
-                            .setMessage("服务器出错！接口 {" + request.getRequestURI() + "} 无法执行，请联系管理员！");
+                            .setMessage("服务器出错！接口 {" + requestURI + "} 无法执行，请联系管理员！");
                     String message;
                     if (handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handler;
                         message = String.format("接口 [%s] 出现异常，方法：%s.%s，异常详细信息：%s",
-                                request.getRequestURI(),
+                                requestURI,
                                 handlerMethod.getBean().getClass().getName(),
                                 handlerMethod.getMethod().getName(),
                                 exception.getMessage());
@@ -172,10 +173,16 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         response.setStatus(200);
+        PrintWriter writer = null;
         try{
-            response.getWriter().write(JSON.toJSONString(response));
+            writer = response.getWriter();
+            writer.write(JSON.toJSONString(result));
         }catch (Exception exception){
             logger.error(exception.getMessage());
+        }finally {
+            if(writer != null){
+                writer.close();
+            }
         }
     }
 }
