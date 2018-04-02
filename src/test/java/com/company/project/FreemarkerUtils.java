@@ -34,6 +34,12 @@ public class FreemarkerUtils {
     }
 
 
+
+    public static Template loadTemplate(String templateName) throws IOException{
+        return configuration.getTemplate(templateName);
+    }
+
+
     /**
      * 生成 Model 和 Mapper 类
      */
@@ -117,11 +123,11 @@ public class FreemarkerUtils {
         File dir;
         Writer out;
         if(isRest) {
-            logger.info("========> isRest: " + isRest + "！=======>" +"用户要求生成带有 Restful 风格的 RestController 控制器.......");
+            logger.info("========> isRest: " + isRest + "！=======>" +"生成带有 Restful 风格的 RestController 控制器.......");
             logger.info("========> 开始生成 " + root.get(ProjectConstants.CLASS_NAME) +"Controller.java 文件....... ");
             template = configuration.getTemplate(ProjectConstants.TEMPLATE_REST_CONTROLLER);
         }else{
-            logger.info("========> isRest: " + isRest + "！=======>" +"用户要求生成不带 Restful 风格的 Controller 控制器.......");
+            logger.info("========> isRest: " + isRest + "！=======>" +"生成不带 Restful 风格的 Controller 控制器.......");
             logger.info("========> 开始生成 " + root.get(ProjectConstants.CLASS_NAME) +"Controller.java 文件....... ");
             template = configuration.getTemplate(ProjectConstants.TEMPLATE_CONTROLLER);
         }

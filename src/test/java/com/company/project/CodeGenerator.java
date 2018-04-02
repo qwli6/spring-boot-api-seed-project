@@ -3,6 +3,7 @@ package com.company.project;
 import com.company.project.core.ProjectConstants;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.DatabaseMetaData;
+import freemarker.template.Template;
 import org.apache.ibatis.annotations.Case;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.*;
@@ -12,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,13 +31,7 @@ import java.util.Map;
  * 原理：利用 freemarker 模板生成 java 文件
  */
 public class CodeGenerator {
-
-
     private static Logger logger = LoggerFactory.getLogger(CodeGenerator.class);
-
-    private static final String CONFIG_PATH = "/Users/liqiwen/code/project/" +
-            "spring-boot-api-seed-project/src/test/" +
-            "resource/generatorConfig.xml";
 
     //数据库配置
     private static final String DB_URL = "jdbc:mysql://localhost:3306/mybatis?useSSL=false";
@@ -69,28 +67,17 @@ public class CodeGenerator {
      * 获取数据库连接
      * @return 数据库连接
      */
-    private static Connection getConnection(){
-        Connection connection = null;
-        try {
-            connection = (Connection) DriverManager
-                    .getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-        } catch (SQLException e) {
-            logger.error("不能获取数据库连接！异常信息：" + e.getMessage());
-        }
-        return connection;
+    private static Connection getConnection() throws SQLException{
+        return (Connection) DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
     }
 
     /**
      * 关闭数据库连接
      * @param connection 关闭连接
      */
-    private static void closeConnection(Connection connection){
-        if(connection != null){
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                logger.error("数据库连接关闭失败！异常信息：" + e.getMessage());
-            }
+    private static void closeConnection(Connection connection) throws Exception {
+        if(connection != null) {
+            connection.close();
         }
     }
 
@@ -98,31 +85,15 @@ public class CodeGenerator {
      * 获取数据库表名
      * @return 数据库表名集合
      */
-    private static List<String> getTableName(){
-        logger.info("开始获取数据库表名....");
+    private static List<String> getTableName() throws Exception{
         List<String> tableName = new ArrayList<>();
         Connection connection = getConnection();
-        ResultSet resultSet = null;
-        try {
-            DatabaseMetaData db = (DatabaseMetaData) connection.getMetaData();
-            resultSet = db.getTables(null, null,
-                    null, new String[]{ProjectConstants.TABLE});
-            while (resultSet.next()){
-                tableName.add(resultSet.getString(ProjectConstants.TABLE_NAME_INDEX));
-            }
-        } catch (SQLException e) {
-            logger.error("获取数据库表名称失败！异常信息：" + e.getMessage());
-        } finally {
-          if(resultSet != null){
-              try {
-                  resultSet.close();
-                  closeConnection(connection);
-              } catch (SQLException e) {
-                  logger.error("结果集关闭失败！异常信息：" + e.getMessage());
-              }
-          }
+        DatabaseMetaData db = (DatabaseMetaData) connection.getMetaData();
+        ResultSet resultSet = db.getTables(null, null,
+                null, new String[]{ProjectConstants.TABLE});
+        while (resultSet.next()){
+            tableName.add(resultSet.getString(ProjectConstants.TABLE_NAME_INDEX));
         }
-        logger.info("获取数据库表名称成功....");
         return tableName;
     }
 
@@ -133,7 +104,7 @@ public class CodeGenerator {
      * @return java 类型
      * jdk1.8 以上 switch 才支持字符串，如果 jdk 版本小于 1.8，请自行更改成 if else 的方式
      */
-    public static String mysqlColumnType2JavaType(String columnType){
+    private static String mysqlColumnType2JavaType(String columnType){
         String javaType;
         switch (columnType){
             case ProjectConstants.MYSQL_TYPE_VARCHAR:
@@ -169,93 +140,40 @@ public class CodeGenerator {
                 default:
                     javaType = ProjectConstants.JAVA_TYPE_STRING;
                     break;
-
         }
         return javaType;
     }
 
-    /**
-     * oracle 列类型转换成 java 类型
-     * @param columnType 列类型
-     * @return java 类型
-     *
-     */
-    public String oracleColumnType2JavaType(String columnType){
-
-        return null;
-    }
-
 
     /**
-     * 获取数据库列名称对应的名称和属性
+     * 获取数据库列名称对应的
+     * 名称
+     * 属性
+     * 注释
+     * 转驼峰命名的java属性名称
      */
-    private static Map<String, Object> getColumnNameAndType(String tableName){
-        Map<String, Object> nameAndTypeMap = new HashMap<>();
+    private static List<ColumnClass> getColumnNameAndType(String tableName) throws Exception{
+        List<ColumnClass> columnClassList = new ArrayList<>();
         Connection connection = getConnection();
-        PreparedStatement statement = null;
         //给执行的 sql 中表名加上 `表名`
         //不加有些表会报错，比如 order 表
         // select * from order;  这样写执行可能会报错
-        String sql = ProjectConstants.EXECUTABLE_SQL +
-                ProjectConstants.CONTEXT_BEGINNING_DELIMITER +
-                tableName +
-                ProjectConstants.CONTEXT_ENDING_DELIMITER;
-        String tempValue = null;
-        try {
-            statement = connection.prepareStatement(sql);
-            ResultSetMetaData metaData = statement.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            for (int i = 0; i < columnCount; i++) {
-                String columnType = metaData.getColumnTypeName(i + 1);
-//                String columnName = tableNameToLowerCamel(metaData.getColumnName(i + 1));
-                String columnName = metaData.getColumnName(i + 1);
-                nameAndTypeMap.put(columnName, mysqlColumnType2JavaType(columnType));
-            }
-        } catch (SQLException e) {
-            logger.error("执行 SQL 失败！异常信息：" + e.getMessage());
-        } finally {
-            if(statement != null){
-                try {
-                    statement.close();
-                    closeConnection(connection);
-                } catch (SQLException e) {
-                    logger.error("关闭数据库连接对象失败！异常信息：" + e.getMessage());
-                }
-            }
+        String sql = ProjectConstants.EXECUTABLE_SQL + "`" + tableName + "`";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSetMetaData metaData = statement.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        for (int i = 0; i < columnCount; i++) {
+            ColumnClass columnClass = new ColumnClass();
+            String columnType = metaData.getColumnTypeName(i + 1);
+            columnClass.setColumnType(mysqlColumnType2JavaType(columnType));
+            String columnJavaName = PathUtils.tableNameToLowerCamel(metaData.getColumnName(i + 1));
+            columnClass.setColumnJavaName(columnJavaName);
+            String columnName = metaData.getColumnName(i + 1);
+            columnClass.setColumnName(columnName);
+            columnClassList.add(columnClass);
         }
-        return nameAndTypeMap;
+        return columnClassList;
     }
-
-
-    private void generator() throws Exception{
-        List<String> warnings = new ArrayList<String>();
-        System.out.println("====开始读取配置文件======");
-        File configFile = new File(CONFIG_PATH);
-        ConfigurationParser cp = new ConfigurationParser(warnings);
-        Configuration config = cp.parseConfiguration(configFile);
-        DefaultShellCallback callback = new DefaultShellCallback(true);
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config,
-                callback, warnings);
-        myBatisGenerator.generate(null);
-    }
-
-
-
-    private static Map<String, Object> initData(String tableName){
-        Map<String, Object> root = new HashMap<>();
-        root.put(ProjectConstants.CLASS_NAME,PathUtils.tableNameToUpperCamel(tableName));
-        root.put(ProjectConstants.AUTHOR_KEY, AUTHOR_VALUE);
-        root.put(ProjectConstants.EMAIL_KEY, EMAIL_VALUE);
-        root.put(ProjectConstants.COMPANY_KEY, COMPANY_VALUE);
-        root.put(ProjectConstants.BASE_PACKAGE_KEY, BASE_TARGET_PACKAGE);
-
-        Map<String, Object> colAndProMap = getColumnNameAndType(tableName);
-        root.put("varMap", colAndProMap);
-
-        return root;
-
-    }
-
 
     /**
      * 是否生成 restful 风格的 controller
@@ -264,23 +182,117 @@ public class CodeGenerator {
      * 只有为 true 的时候才会生成页面模板
      * 为 true 的时候只生成接口
      */
-    private static void generatorCode(boolean isRest){
+    private void generator(boolean isRest) throws Exception{
         List<String> tableNames = getTableName();
         for (int i = 0; i < tableNames.size(); i++) {
-            Map<String, Object> root = initData(tableNames.get(i));
+//            Map<String, Object> root = initData(tableNames.get(i));
             try {
-                FreemarkerUtils.genModelAndMapper(root);
-                FreemarkerUtils.genServiceAndImpl(root);
-                FreemarkerUtils.genController(root, false);
-                FreemarkerUtils.genMapperXml(root);
-                FreemarkerUtils.genPageBean(root);
+//                FreemarkerUtils.genModelAndMapper(root);
+//                FreemarkerUtils.genServiceAndImpl(root);
+//                FreemarkerUtils.genController(root, false);
+//                FreemarkerUtils.genMapperXml(root);
+//                FreemarkerUtils.genPageBean(root);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+
+    private void generateController(String tableName) throws Exception{
+        Map<String, Object> dataMap = new HashMap<>();
+        String template = ProjectConstants.TEMPLATE_REST_CONTROLLER;
+        String packageSuffix = ProjectConstants.CONTROLLER_PACKAGE_SUFFIX;
+        String classSuffix = ProjectConstants.CONTROLLER_CLASS_SUFFIX;
+        List<ColumnClass> columnClassList = getColumnNameAndType(tableName);
+        dataMap.put(ProjectConstants.CLASS_NAME, PathUtils.tableNameToUpperCamel(tableName));
+        dataMap.put("dataMap", columnClassList);
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+    }
+
+
+    private void generateServiceAndImplFile(String tableName) throws Exception{
+        Map<String, Object> dataMap = new HashMap<>();
+        String template = ProjectConstants.TEMPLATE_SERVICE;
+        String packageSuffix = ProjectConstants.SERVICE_PACKAGE_SUFFIX;
+        String classSuffix = ProjectConstants.SERVICE_CLASS_SUFFIX;
+        List<ColumnClass> columnClassList = getColumnNameAndType(tableName);
+        dataMap.put(ProjectConstants.CLASS_NAME, PathUtils.tableNameToUpperCamel(tableName));
+        dataMap.put("dataMap", columnClassList);
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+        template = ProjectConstants.TEMPLATE_SERVICE_IMPL;
+        packageSuffix = ProjectConstants.SERVICE_IMPL_PACKAGE_SUFFIX;
+        classSuffix = ProjectConstants.SERVICE_IMPL_CLASS_SUFFIX;
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+    }
+
+    private void generateMapperXmlFile(String tableName) throws Exception{
+        Map<String, Object> dataMap = new HashMap<>();
+        String template = ProjectConstants.TEMPLATE_MAPPER_XML;
+        String packageSuffix = ProjectConstants.MAPPER_XML_DIR_SUFFIX;
+        String classSuffix = ProjectConstants.MAPPER_XML_FILE_SUFFIX;
+        List<ColumnClass> columnClassList = getColumnNameAndType(tableName);
+        dataMap.put(ProjectConstants.CLASS_NAME, PathUtils.tableNameToUpperCamel(tableName));
+        dataMap.put("dataMap", columnClassList);
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+    }
+
+
+    private void generateMapperFile(String tableName) throws Exception{
+        Map<String, Object> dataMap = new HashMap<>();
+        String template = ProjectConstants.TEMPLATE_MAPPER;
+        String packageSuffix = ProjectConstants.MAPPER_PACKAGE_SUFFIX;
+        String classSuffix = ProjectConstants.MAPPER_CLASS_SUFFIX;
+        List<ColumnClass> columnClassList = getColumnNameAndType(tableName);
+        dataMap.put(ProjectConstants.CLASS_NAME, PathUtils.tableNameToUpperCamel(tableName));
+        dataMap.put("dataMap", columnClassList);
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+    }
+
+
+    private void generateModelFile(String tableName) throws Exception{
+        Map<String, Object> dataMap = new HashMap<>();
+        String template = ProjectConstants.TEMPLATE_MODEL;
+        String packageSuffix = ProjectConstants.MODEL_PACKAGE_SUFFIX;
+        String classSuffix = ProjectConstants.MODEL_CLASS_SUFFIX;
+        List<ColumnClass> columnClassList = getColumnNameAndType(tableName);
+        dataMap.put(ProjectConstants.CLASS_NAME, PathUtils.tableNameToUpperCamel(tableName));
+        dataMap.put("dataMap", columnClassList);
+        generateFileByTemplate(template, packageSuffix, classSuffix, dataMap);
+    }
+
+
+    private void generateFileByTemplate(String templateName,String packageSuffix, String classSuffix, Map<String, Object> dataMap) throws Exception {
+        Template template = FreemarkerUtils.loadTemplate(templateName);
+        dataMap.put(ProjectConstants.AUTHOR_KEY, AUTHOR_VALUE);
+        dataMap.put(ProjectConstants.EMAIL_KEY, EMAIL_VALUE);
+        dataMap.put(ProjectConstants.COMPANY_KEY, COMPANY_VALUE);
+        dataMap.put(ProjectConstants.BASE_PACKAGE_KEY, BASE_TARGET_PACKAGE);
+        String path =PathUtils.packageNameToPath(dataMap.get(ProjectConstants.BASE_PACKAGE_KEY) + packageSuffix);
+        File file;
+        if(classSuffix.equals(ProjectConstants.MAPPER_XML_FILE_SUFFIX)) {
+            file = new File(ProjectConstants.PROJECT_PATH + ProjectConstants.RESOURCES_PATH + packageSuffix);
+        }else {
+            file = new File(ProjectConstants.PROJECT_PATH + ProjectConstants.JAVA_PATH + path);
+        }
+        if(!file.exists()){
+            file.mkdirs();
+        }else{
+            file.delete();
+            file.mkdirs();
+        }
+        Writer out = new FileWriter(new File(file, dataMap.get(ProjectConstants.CLASS_NAME) + classSuffix));
+        template.process(dataMap, out);
+        out.flush();
+    }
+
+
     public static void main(String[] args) throws Exception {
-        generatorCode(false);
+        CodeGenerator codeGenerator = new CodeGenerator();
+        codeGenerator.generateModelFile("user");
+        codeGenerator.generateMapperFile("user");
+        codeGenerator.generateMapperXmlFile("user");
+        codeGenerator.generateServiceAndImplFile("user");
+        codeGenerator.generateController("user");
     }
 }

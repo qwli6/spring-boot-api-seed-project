@@ -1,10 +1,9 @@
-package ${packageName}.controller;
+package ${packageName}.web.controller;
 
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,14 +21,14 @@ import ${packageName}.service.${className}Service;
 @RequestMapping("/${className?lower_case}")
 public class ${className}Controller {
 
-    @Resource
+    @Resource(name = "${className?uncap_first}Service")
     private ${className}Service ${className?uncap_first}Service;
 
     /**
      * 获取 ${className?lower_case} 列表
-     * @return
+     * @return ${className?lower_case} 列表
      **/
-    @GetMapping("/list")
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String find${className}List(Model model){
         List<${className}> ${className?lower_case}List = ${className?uncap_first}Service.findAll();
         //补充其他逻辑
@@ -43,7 +42,7 @@ public class ${className}Controller {
      * 去新增/修改 ${className} 页面
      * @return 页面
      **/
-    @GetMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
     public String save${className}(${className} ${className?uncap_first}, Model model){
 
         //修改 ${className}
@@ -57,10 +56,10 @@ public class ${className}Controller {
     }
 
     /**
-    * 去新增 ${className} 页面
+    *  保存 ${className} 页面
     * @return 页面
     **/
-    @PostMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save${className}(${className} ${className?uncap_first}){
         ${className?uncap_first}Service.save${className}(${className?uncap_first});
         return "redirect:/${className?lower_case}/list";
@@ -70,7 +69,7 @@ public class ${className}Controller {
     * 保存修改
     * @return 页面
     **/
-    @PostMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update${className}(${className} ${className?lower_case},Model model){
         //根据用户 id 查找用户
         int updateCount = ${className?uncap_first}Service.update${className}(${className?lower_case});
@@ -80,4 +79,20 @@ public class ${className}Controller {
         return null;
     }
 
+    /**
+     * 分页，无条件分页
+     * @return ${className?uncap_first}List
+     **/
+    @RequestMapping(value = "/list/{page}",method = RequestMethod.GET)
+    public String find${className}ListByPage(@PathVariable("page") Integer page,
+                                             @RequestParam(defaultValue = "0", required = true) Integer size){
+
+        return null;
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public String find${className}ListByVo(QueryVo queryVo){
+
+        return null;
+    }
 }

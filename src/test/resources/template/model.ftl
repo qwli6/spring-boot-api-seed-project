@@ -11,16 +11,18 @@ import java.io.Serializable;
 */
 public class ${className} implements Serializable {
 
-<#list varMap?keys as key>
-    private ${varMap["${key}"]} ${key};
+<#list dataMap as property>
+    private ${property.columnType} ${property.columnJavaName};
 </#list>
 
-<#list varMap?keys as key>
-    public void set${key?cap_first}(${varMap["${key}"]} ${key}){
-        this.${key} = ${key};
+<#list dataMap as getAndSet>
+    public void set${getAndSet.columnJavaName?cap_first}(${getAndSet.columnType} ${getAndSet.columnJavaName}){
+        this.${getAndSet.columnJavaName} = ${getAndSet.columnJavaName};
     }
-    public ${varMap["${key}"]} get${key?cap_first}(){
-        return this.${key};
+    public ${getAndSet.columnType} get${getAndSet.columnJavaName?cap_first}(){
+        return this.${getAndSet.columnJavaName};
     }
 </#list>
+
+
 }

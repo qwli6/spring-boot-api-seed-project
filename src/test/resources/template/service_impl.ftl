@@ -15,11 +15,11 @@ import ${packageName}.mapper.${className}Mapper;
 *  Date: ${.now?string("yyyy-MM-dd")}
 *  Company: ${company}
 */
-@Service
+@Service("${className?uncap_first}Service")
 @Transactional
 public class ${className}ServiceImpl implements ${className}Service {
 
-    @Resource
+    @Resource(name = "${className?uncap_first}Mapper")
     private ${className}Mapper ${className?uncap_first}Mapper;
 
     @Override
@@ -28,34 +28,36 @@ public class ${className}ServiceImpl implements ${className}Service {
     }
 
     @Override
-    public void delete${className}ById(@Param("id") Integer id){
-        ${className?uncap_first}Mapper.delete${className}ById(id);
+    public List<${className}> find${className}List(){
+        return ${className?uncap_first}Mapper.find${className}List();
     }
 
     @Override
-    public void edit${className}ById(${className} ${className?uncap_first}){
-        ${className?uncap_first}Mapper.edit${className}ById(${className?uncap_first});
+    public Integer selectCount(){
+        return ${className?uncap_first}Mapper.selectCount();
+    }
+
+<#list dataMap as key>
+    <#if key_index == 0>
+    @Override
+    public void delete${className}By${key.columnJavaName?cap_first}(${key.columnType} ${key.columnJavaName}){
+        ${className?uncap_first}Mapper.delete${className}By${key.columnJavaName?cap_first}(${key.columnJavaName});
     }
 
     @Override
-    public ${className} find${className}ById(@Param("id") Integer id){
-        return ${className?uncap_first}Mapper.find${className}ById(id);
+    public void deleteBatch(List<${key.columnType}> ids){
+        ${className?uncap_first}Mapper.deleteBatch(ids);
     }
 
     @Override
-    public List<${className}> find${className}sByConditions(){
-        return null;
+    public ${className} find${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName}){
+        return ${className?uncap_first}Mapper.find${className}By${key.columnJavaName?cap_first}(${key.columnJavaName});
     }
+    </#if>
+</#list>
 
     @Override
-    public List<${className}> find${className}sNoConditions(){
-        return ${className?uncap_first}Mapper.find${className}sNoConditions();
-    }
-
-    @Override
-    public List<${className}> find${className}sByPage(){
-        <#--${pageName} pageName = new ${pageName}();-->
-        <#--pageName.set-->
-        return null;
+    public void edit${className}(${className} ${className?lower_case}){
+        ${className?uncap_first}Mapper.edit${className}(${className?lower_case});
     }
 }

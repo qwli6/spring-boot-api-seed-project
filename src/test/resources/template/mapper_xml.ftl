@@ -14,11 +14,11 @@
 
     <!-- 基本字段-->
     <sql id="Base_Column_List">
-        <#list dataMap as property>
-            <trim suffixOverrides=",">
-                ${property.columnName},
-            </trim>
-        </#list>
+    <trim suffixOverrides=",">
+    <#list dataMap as property>
+        ${property.columnName},
+    </#list>
+    </trim>
     </sql>
 
     <sql id="tableName">
@@ -38,8 +38,8 @@
 
 
     <!-- 保存 -->
-    <insert id="save${className}" parameterType="${packageName}.model.${className?lower_case}">
-        insert into
+    <insert id="save${className}" parameterType="${packageName}.model.${className}">
+         insert into
         <include refid="tableName"/>
         <trim prefix="(" suffixOverrides="," suffix=")">
             <!-- 列对象 -->
@@ -49,7 +49,7 @@
                 </if>
             </#list>
         </trim>
-        <trim prefix="values (" suffixOverrides="," suffix=")">
+        <trim prefix=" values (" suffixOverrides="," suffix=")">
             <!-- 成员属性-->
             <#list dataMap as value>
                 <if test="${value.columnJavaName} != null and ${value.columnJavaName} != ''">

@@ -14,7 +14,7 @@ import ${packageName}.model.${className};
 *  Company: ${company}
 */
 @Mapper
-@Component
+@Component("${className?uncap_first}Mapper")
 public interface ${className}Mapper {
 
     /**
@@ -24,50 +24,36 @@ public interface ${className}Mapper {
     void save${className}(${className} ${className?uncap_first});
 
     /**
-     *  按 id 删除 ${className}
-     *  @return
+     * 获取列表
+     * @return 列表
      **/
-    void delete${className}ById(@Param("id") Integer id);
+    List<${className}> find${className}List();
 
     /**
-     * 按 id 修改 ${className}
-     *  @return
-     **/
-    void edit${className}ById(${className} ${className?uncap_first});
+    *  获取全部数量
+    *  @return 总数
+    **/
+    Integer selectCount();
+
+<#list dataMap as key>
+    <#if key_index == 0>
+    /**
+    *  删除
+    **/
+    void delete${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName} );
 
     /**
-     *  根据 id 查找 ${className}
-     *  @return ${className?lower_case}
-     **/
-    ${className} find${className}ById(@Param("id") Integer id);
+    *  批量删除
+    **/
+    void deleteBatch(List<${key.columnType}> ids);
 
     /**
-     *  按条件获取 ${className} 列表
-     *  @return ${className?lower_case} 列表
-     **/
-    List<${className}> find${className}sByConditions();
+    *  根据主键获取
+    *  @return ${className}
+    **/
+    ${className} find${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName});
+    </#if>
+</#list>
 
-    /**
-     *  无条件查询全部${className}列表
-     *  @return ${className?lower_case} 列表
-     **/
-    List<${className}> find${className}sNoConditions();
-
-    /**
-     *  获取全部数量
-     *  @return 总数
-     **/
-    Integer countNoConditions();
-
-    /**
-     *  按条件获取数量
-     *  @return 总数
-     **/
-    Integer countByConditions();
-
-    /**
-     *  分页查找
-     *  当前页的 ${className} 对象集合
-     **/
-    List<${className}> find${className}sByPage();
+    void edit${className}(${className} ${className?lower_case});
 }
