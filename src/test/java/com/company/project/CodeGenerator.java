@@ -185,13 +185,12 @@ public class CodeGenerator {
     private void generator(boolean isRest) throws Exception{
         List<String> tableNames = getTableName();
         for (int i = 0; i < tableNames.size(); i++) {
-//            Map<String, Object> root = initData(tableNames.get(i));
             try {
-//                FreemarkerUtils.genModelAndMapper(root);
-//                FreemarkerUtils.genServiceAndImpl(root);
-//                FreemarkerUtils.genController(root, false);
-//                FreemarkerUtils.genMapperXml(root);
-//                FreemarkerUtils.genPageBean(root);
+                generateModelFile(tableNames.get(i));
+                generateMapperFile(tableNames.get(i));
+                generateMapperXmlFile(tableNames.get(i));
+                generateServiceAndImplFile(tableNames.get(i));
+                generateController(tableNames.get(i));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -289,10 +288,6 @@ public class CodeGenerator {
 
     public static void main(String[] args) throws Exception {
         CodeGenerator codeGenerator = new CodeGenerator();
-        codeGenerator.generateModelFile("user");
-        codeGenerator.generateMapperFile("user");
-        codeGenerator.generateMapperXmlFile("user");
-        codeGenerator.generateServiceAndImplFile("user");
-        codeGenerator.generateController("user");
+        codeGenerator.generator(true);
     }
 }

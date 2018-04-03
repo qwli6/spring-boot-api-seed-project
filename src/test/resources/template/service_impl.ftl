@@ -50,7 +50,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     }
 
     @Override
-    public ${className} find${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName}){
+    public ${className} find${className}By${key.columnJavaName?cap_first}(${key.columnType} ${key.columnJavaName}){
         return ${className?uncap_first}Mapper.find${className}By${key.columnJavaName?cap_first}(${key.columnJavaName});
     }
     </#if>
