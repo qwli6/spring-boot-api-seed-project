@@ -1,8 +1,7 @@
 package ${packageName}.service;
 
 
-import org.apache.ibatis.annotations.Param;
-import java.util.List;
+import com.company.project.core.CommonService;
 import ${packageName}.model.${className};
 
 /**
@@ -10,48 +9,10 @@ import ${packageName}.model.${className};
 *  Email: ${email}
 *  Date: ${.now?string("yyyy-MM-dd")}
 *  Company: ${company}
+*  这里只需要实现不同部分的逻辑即可，
+*  公共部分的逻辑已经全部在 AbstractService 中实现了。
 */
-public interface ${className}Service {
-
-    /**
-    *  保存 ${className}
-    *  @return
-    **/
-    void save${className}(${className} ${className?uncap_first});
-
-    /**
-    * 获取列表
-    * @return 列表
-    **/
-    List<${className}> find${className}List();
-
-    /**
-    *  获取全部数量
-    *  @return 总数
-    **/
-    Integer selectCount();
-
-<#list dataMap as key>
-    <#if key_index == 0>
-    /**
-    *  删除
-    **/
-    void delete${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName} );
-
-    /**
-    *  批量删除
-    **/
-    void deleteBatch(List<${key.columnType}> ids);
-
-    /**
-    *  根据主键获取
-    *  @return ${className}
-    **/
-    ${className} find${className}By${key.columnJavaName?cap_first}(@Param("${key.columnJavaName}")${key.columnType} ${key.columnJavaName});
-    </#if>
-</#list>
-
-    void edit${className}(${className} ${className?lower_case});
+public interface ${className}Service extends CommonService<${className}> {
 
 
 }
